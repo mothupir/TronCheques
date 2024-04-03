@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { WalletService } from './service/wallet/wallet.service';
+import { DepositService } from './service/deposit/deposit.service';
 
 @Component({
   selector: 'app-root',
@@ -9,19 +10,26 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'Tron Cheques';
 
-  href: string = "";
-
   items = [
-    { id: 1, name: "Deposit", link: 'deposit', available: true },
-    { id: 2, name: "Withdraw", link: 'withdraw', available: true },
-    { id: 3, name: "History", link: 'history', available: false },
-    { id: 4, name: "Admin", link: 'admin', available: false }
+    { id: 1, name: "Deposit", link: 'deposit', icon: 'pi pi-user-minus', available: true },
+    { id: 2, name: "Withdraw", link: 'withdraw', icon: 'pi pi-user-plus', available: true },
+    { id: 3, name: "History", link: 'history', icon: 'pi pi-history', available: false },
+    { id: 4, name: "Admin", link: 'admin', icon: 'pi pi-user-edit', available: false }
   ];
 
-  constructor(private router: Router) { }
+  connected = false;
 
-  ngOnInit() {
-    
+  constructor(private walletService: WalletService, private depositService: DepositService) {
+    this.connected = this.walletService.tronLink.connected;
+    if (this.connected) {
+      this.items = this.items.map(item => {
+        if (item.name == "History") item.available = true;
+        let addr;
+        //this.depositService.getOwner().then(res => addr = res);
+        if (this.walletService.tronLink.address ==  addr && item.name == "Admin") item.available = true; 
+        return item;
+      });
+    }
   }
 
   ngAfterViewInit() {
@@ -36,8 +44,37 @@ export class AppComponent {
 
   onNavClick(id: string) {
     this.items.forEach(item => {
-      document.getElementById(item.name)!.style.background = 'none';
+      if (item.available) {
+        document.getElementById(item.name)!.style.color = 'white';
+        document.getElementById(item.name)!.style.background = 'transparent';
+      }
     });
-    document.getElementById(id)!.style.background = 'var(--primary-color)';
+    document.getElementById(id)!.style.color = 'black';
+    document.getElementById(id)!.style.background = 'var(--highlight-bg)';
+  }
+
+  async connect() {
+    !this.walletService.tronLink.connected ? this.walletService.tronLink.connect().then(() => {
+      this.items = this.items.map(item => {
+        if (item.name == "History") item.available = true;
+        let addr;
+        //this.depositService.getOwner().then(res => addr = res);
+        if (this.walletService.tronLink.address == addr && item.name == "Admin") item.available = true; 
+        if (item.name == "History") item.available = true;
+        this.connected = true;
+        return item;
+      });
+    }).catch(err => console.log("Err: ", err)) :
+    this.walletService.tronLink.disconnect().then(() => {
+      this.items = this.items.map(item => {
+        if (item.name == "History" || item.name == "Admin") item.available = false;
+        this.connected = false;
+        return item;
+      });
+    });
+    console.log("Here: ")
+    const tronWeb: any = window.tronWeb;
+    const contract = await tronWeb.contract().at('TYfJeDpcWC6NcYiC6TrAceT5pQArYP1oM8');
+    //console.log("Value: ", contract.getOwner());
   }
 }

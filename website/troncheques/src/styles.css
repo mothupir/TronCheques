@@ -1,4 +1,4 @@
 @import "primeng/resources/primeng.css";
 @import "primeflex/primeflex.css";
 @import "primeicons/primeicons.css";
-@import "primeng/resources/themes/arya-purple/theme.css";
+@import "../node_modules/primeng/resources/themes/bootstrap4-dark-purple/theme.css";

@@ -1,19 +1,14 @@
-<p-menubar>
-  <ng-template pTemplate="start">
-    <div class="logo">Tron Cheques</div>
-  </ng-template>
-
-  <ng-template pTemplate="end">
+<div class="main">
+  <div class="nav-wrapper">
+    <div class="logo">T.C</div>
     <div class="nav">
       <div *ngFor="let item of items">
-        <div class="btn-item" id="{{item.name}}" (click)="onNavClick(item.name)" routerLink="{{item.link}}">{{item.name}}</div>
+        <div class="btn-item" *ngIf="item.available" id="{{item.name}}" (click)="onNavClick(item.name)" routerLink="{{item.link}}"><i class="{{item.icon}}"></i> {{item.name}}</div>
       </div>
-      <div class="btn-connect">Connect</div>
+      <div class="separator"></div>
+      <p-button class="btn-connect" (click)="connect()" icon="{{connected ? 'pi pi-sign-out' : 'pi pi-sign-in'}}" styleClass="p-button-success p-button-outlined p-button-raised p-button-rounded p-button-sm" iconPos="right"></p-button>
     </div>
-  </ng-template>
-  <!--<ng-template pTemplate="end">
-    <p-button icon="pi pi-bars"  [rounded]=true [text]=true></p-button>
-  </ng-template>-->
-</p-menubar>
-
-<router-outlet />
+  </div>
+  
+  <router-outlet />
+</div>

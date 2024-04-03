@@ -1,1 +1,53 @@
-<p>deposit works!</p>
+<div class="wrapper">
+    <div class="header">
+        Header
+    </div>
+    <div class="content">
+        <p-card header="Deposit" class="deposit">
+            <div class="details">
+                <div class="input">
+                    <label class="label">Wallet Address</label>
+                    <p-inputGroup>
+                        <input type="text" [(ngModel)]="walletAddress" pInputText placeholder="Wallet Address" />
+                        <button type="button" (click)="useConnectedWallet()" pButton icon="pi pi-wallet" class="p-button-secondary" pTooltip="Click to paste connected wallet address"></button>
+                    </p-inputGroup>
+                </div>
+                
+                <div class="input">
+                    <label class="label">Amount</label>
+                    <p-inputGroup>
+                        <p-inputNumber [(ngModel)]="amount" inputId="minmax" [min]="0"[max]="99999999" mode="decimal" placeholder="Withdrawal Code"></p-inputNumber>
+                        <p-inputGroupAddon>
+                            <label for="sun">SUN</label>
+                            <p-radioButton name="sun" value="sun" [(ngModel)]="currency" inputId="sun"></p-radioButton>
+                        </p-inputGroupAddon>
+                        <p-inputGroupAddon>
+                            <label for="trx">TRX</label>
+                            <p-radioButton name="trx" value="trx" [(ngModel)]="currency" inputId="trx"></p-radioButton>
+                        </p-inputGroupAddon>
+                    </p-inputGroup>
+                </div>
+    
+                <div class="input">
+                    <label class="label">Withdrawal Code</label>
+                    <p-inputGroup>
+                        <input type="text" [(ngModel)]="withdralCode" pInputText placeholder="Withdrawal Code" />
+                        <button type="button" (click)="generate()" pButton label="Generate" icon="pi pi-code" class="p-button-info p-button-outlined" pTooltip="Generate withdrawal code"></button>
+                    </p-inputGroup>
+                </div>
+
+                <div class="submit">
+                    <button pButton class="p-button-warning p-button-raised p-button-text p-button-sm btn-submit" label="Clear"></button>
+                    <button pButton (click)="confirm()" class="p-button-success p-button-raised p-button-outlined p-button-sm btn-submit" label="Confirm"></button>
+                </div>
+            </div>
+        </p-card>
+
+        <p-card header="Information" class="info">
+            <p class="m-0">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                quas!
+            </p>
+        </p-card>
+    </div>
+</div>
