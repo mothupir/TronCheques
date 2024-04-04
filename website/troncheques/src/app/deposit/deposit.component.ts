@@ -10,7 +10,7 @@ export class DepositComponent {
   walletAddress: string | null = "";
   currency = "sun";
   amount = 0;
-  withdralCode = "";
+  withdrawalCode = "";
 
   constructor(private walletService: WalletService) {}
 
@@ -18,7 +18,7 @@ export class DepositComponent {
     console.log("Wallet Address: ", this.walletAddress);
     console.log("Currency: ", this.currency);
     console.log("Amount: ", this.amount);
-    console.log("Withdral Code: ", this.withdralCode);
+    console.log("Withdral Code: ", this.withdrawalCode);
   }
 
   async useConnectedWallet() {
@@ -26,6 +26,12 @@ export class DepositComponent {
   }
 
   async generate() {
-    this.withdralCode = "12345678";
+    this.withdrawalCode = "12345678";
+  }
+
+  async clear() {
+    this.walletAddress = "";
+    this.amount = 0;
+    this.withdrawalCode = "";
   }
 }

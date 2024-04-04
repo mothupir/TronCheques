@@ -18,6 +18,7 @@ export class AppComponent {
   ];
 
   connected = false;
+  visible = false;
 
   constructor(private walletService: WalletService, private depositService: DepositService) {
     this.connected = this.walletService.tronLink.connected;

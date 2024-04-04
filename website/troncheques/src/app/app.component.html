@@ -8,7 +8,20 @@
       <div class="separator"></div>
       <p-button class="btn-connect" (click)="connect()" icon="{{connected ? 'pi pi-sign-out' : 'pi pi-sign-in'}}" styleClass="p-button-success p-button-outlined p-button-raised p-button-rounded p-button-sm" iconPos="right"></p-button>
     </div>
+    <div class="burger">
+      <button pButton (click)="visible = true" class="p-button-text p-button-secondary" icon="pi pi-bars"></button>
+    </div>
   </div>
+
+  <p-sidebar [(visible)]="visible" position="right">
+    <ng-template pTemplate="header">Header Content</ng-template>
+    <ng-template pTemplate="content">
+      <div *ngFor="let item of items">
+        <div class="btn-item" *ngIf="item.available" id="{{item.name}}" (click)="onNavClick(item.name)" routerLink="{{item.link}}"><i class="{{item.icon}}"></i> {{item.name}}</div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">Footer Content</ng-template>
+  </p-sidebar>
   
   <router-outlet />
 </div>

@@ -21,6 +21,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     CheckboxModule,
     InputTextModule,
     RadioButtonModule,
-    InputNumberModule
+    InputNumberModule,
+    SidebarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

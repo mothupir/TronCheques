@@ -31,13 +31,13 @@
                 <div class="input">
                     <label class="label">Withdrawal Code</label>
                     <p-inputGroup>
-                        <input type="text" [(ngModel)]="withdralCode" pInputText placeholder="Withdrawal Code" />
+                        <input type="text" [(ngModel)]="withdrawalCode" pInputText placeholder="Withdrawal Code" />
                         <button type="button" (click)="generate()" pButton label="Generate" icon="pi pi-code" class="p-button-info p-button-outlined" pTooltip="Generate withdrawal code"></button>
                     </p-inputGroup>
                 </div>
 
                 <div class="submit">
-                    <button pButton class="p-button-warning p-button-raised p-button-text p-button-sm btn-submit" label="Clear"></button>
+                    <button pButton (click)="clear()" class="p-button-warning p-button-raised p-button-text p-button-sm btn-submit" label="Clear"></button>
                     <button pButton (click)="confirm()" class="p-button-success p-button-raised p-button-outlined p-button-sm btn-submit" label="Confirm"></button>
                 </div>
             </div>
