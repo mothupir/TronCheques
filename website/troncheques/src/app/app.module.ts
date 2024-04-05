@@ -22,6 +22,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SidebarModule } from 'primeng/sidebar';
+import { AccordionModule } from 'primeng/accordion';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { SidebarModule } from 'primeng/sidebar';
     InputTextModule,
     RadioButtonModule,
     InputNumberModule,
-    SidebarModule
+    SidebarModule,
+    AccordionModule,
+    TabViewModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,28 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 15px 0;
+}
+
+.header {
+    background: gray;
+    text-align: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.options {
+    display: flex;
+    gap: 15px;
+    justify-content: end;
+    border: 1px solid var(--primary-color);
+    padding: 10px;
+    border-radius: 5px;
+    
+}

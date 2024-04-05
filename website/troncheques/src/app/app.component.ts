@@ -13,8 +13,8 @@ export class AppComponent {
   items = [
     { id: 1, name: "Deposit", link: 'deposit', icon: 'pi pi-user-minus', available: true },
     { id: 2, name: "Withdraw", link: 'withdraw', icon: 'pi pi-user-plus', available: true },
-    { id: 3, name: "History", link: 'history', icon: 'pi pi-history', available: false },
-    { id: 4, name: "Admin", link: 'admin', icon: 'pi pi-user-edit', available: false }
+    { id: 3, name: "History", link: 'history', icon: 'pi pi-history', available: true },
+    { id: 4, name: "Admin", link: 'admin', icon: 'pi pi-user-edit', available: true }
   ];
 
   connected = false;

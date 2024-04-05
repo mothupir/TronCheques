@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Payment, Payments } from '../model/deposit.model';
 
 @Component({
   selector: 'app-history',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './history.component.css'
 })
 export class HistoryComponent {
-
+  activePayments: Payments = new Payments();
+  inactivePayments: Payments = new Payments();
 }
