@@ -24,6 +24,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SidebarModule } from 'primeng/sidebar';
 import { AccordionModule } from 'primeng/accordion';
 import { TabViewModule } from 'primeng/tabview';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { TabViewModule } from 'primeng/tabview';
     InputNumberModule,
     SidebarModule,
     AccordionModule,
-    TabViewModule
+    TabViewModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

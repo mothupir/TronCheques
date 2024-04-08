@@ -26,3 +26,30 @@
     border-radius: 5px;
     
 }
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    padding: 10px;
+    border-radius: 5px;
+    font-style: italic;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.separator {
+    border-bottom: 1px dotted gray;
+    margin: 5px 0;
+}
+
+.datapoint {
+    font-weight: 500;
+}
+
+.data {
+    font-weight: 100;
+}

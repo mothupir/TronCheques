@@ -8,21 +8,76 @@
             <button pButton label="Withdraw" icon="pi pi-user-minus" iconPos="right" class="p-button-raised p-button-text p-button-info"></button>
             <button pButton label="Deposit" icon="pi pi-user-plus" iconPos="right" class="p-button-raised p-button-text p-button-info"></button>
         </div>
+
+        <div class="stats">
+            <div class="row">
+                <div class="datapoint">Total Payments</div>
+                <div class="data">10034</div>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+                <div class="datapoint">Active Payments</div>
+                <div class="data">10034</div>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+                <div class="datapoint">Total Value</div>
+                <div class="data">10034</div>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+                <div class="datapoint">Active Value</div>
+                <div class="data">10034</div>
+            </div>
+            <div class="separator"></div>
+            <div class="row">
+                <div class="datapoint">Account Value</div>
+                <div class="data">10034</div>
+            </div>
+        </div>
+
         <p-tabView>
             <p-tabPanel header="Search">
                 <div>
                     Content
                 </div>
             </p-tabPanel>
+
             <p-tabPanel header="Statistics">
                 <div>
                     Content
                 </div>
             </p-tabPanel>
+
             <p-tabPanel header="Fees">
-                <div>
-                    Content
-                </div>
+                <p-table [value]="fees" [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template pTemplate="caption">
+                        <div class="flex align-items-center justify-content-between">
+                            Transaction Fees
+                            <button pButton label="Add" class="p-button-raised p-button-sm p-button-text" icon="pi pi-plus"></button>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Threshold</th>
+                            <th>Deposit Fees</th>
+                            <th>Reversal Fees</th>
+                            <th>Edit</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-fee>
+                        <tr>
+                            <td>{{ fee.threshold }}</td>
+                            <td>{{ fee.deposit }}</td>
+                            <td>{{ fee.reversal }}</td>
+                            <td>
+                                <button pButton icon="pi pi-pencil" class="p-button-text p-button-info"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </p-tabPanel>
         </p-tabView>
     </div>
