@@ -25,6 +25,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { AccordionModule } from 'primeng/accordion';
 import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { TableModule } from 'primeng/table';
     SidebarModule,
     AccordionModule,
     TabViewModule,
-    TableModule
+    TableModule,
+    ScrollPanelModule
   ],
   providers: [],
   bootstrap: [AppComponent]

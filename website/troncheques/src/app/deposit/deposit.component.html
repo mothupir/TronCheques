@@ -8,7 +8,7 @@
                 <div class="input">
                     <label class="label">Wallet Address</label>
                     <p-inputGroup>
-                        <input type="text" [(ngModel)]="walletAddress" pInputText placeholder="Wallet Address" />
+                        <input type="text" id="walletAddress" [(ngModel)]="walletAddress" pInputText placeholder="Wallet Address" />
                         <button type="button" (click)="useConnectedWallet()" pButton icon="pi pi-wallet" class="p-button-secondary" pTooltip="Click to paste connected wallet address"></button>
                     </p-inputGroup>
                 </div>
@@ -16,7 +16,7 @@
                 <div class="input">
                     <label class="label">Amount</label>
                     <p-inputGroup>
-                        <p-inputNumber [(ngModel)]="amount" inputId="minmax" [min]="0"[max]="99999999" mode="decimal" placeholder="Withdrawal Code"></p-inputNumber>
+                        <p-inputNumber id="amount" [(ngModel)]="amount" inputId="minmax" [min]="0"[max]="99999999" mode="decimal" placeholder="Withdrawal Code"></p-inputNumber>
                         <p-inputGroupAddon>
                             <label for="sun">SUN</label>
                             <p-radioButton name="sun" value="sun" [(ngModel)]="currency" inputId="sun"></p-radioButton>
@@ -29,11 +29,8 @@
                 </div>
     
                 <div class="input">
-                    <label class="label">Withdrawal Code</label>
-                    <p-inputGroup>
-                        <input type="text" [(ngModel)]="withdrawalCode" pInputText placeholder="Withdrawal Code" />
-                        <button type="button" (click)="generate()" pButton label="Generate" icon="pi pi-code" class="p-button-info p-button-outlined" pTooltip="Generate withdrawal code"></button>
-                    </p-inputGroup>
+                    <label class="label">Reference/Description</label>
+                    <input type="text" id="ref" [(ngModel)]="description" pInputText placeholder="Reference/Description" />
                 </div>
 
                 <div class="submit">
@@ -43,11 +40,74 @@
             </div>
         </p-card>
 
-        <p-card header="Information" class="info">
-            <p class="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                quas!
-            </p>
+        <p-card header="Instructions" class="info">
+            <div class="steps">
+                <div class="step">
+                    <span>Step 1 - Wallet Address</span>
+                    <p class="m-0">
+                        Paste the wallet address you are depositing from. Or click the wallet icon to paste the wallet address you are connected to.
+                    </p>
+                </div>
+                <div class="step">
+                    <span>Step 2 - Amount/Value</span>
+                    <p class="m-0">
+                        Enter the amount/value you want to deposit. Choose the currency you wanna deposit in, sun/trx. Take note of the minimun/maximum amount in the fees section below.
+                    </p>
+                </div>
+                <div class="step">
+                    <span>Step 3 - Reference</span>
+                    <p class="m-0">
+                        Type in your reference number.
+                    </p>
+                </div>
+                <div class="step">
+                    <span>Step 4 - Confirm</span>
+                    <p class="m-0">
+                        Click confirm and then go to your TronLink wallet to sign the transaction. The you'll get a popup with withdral details. Copy them and share with the person who will withdraw the amount.
+                    </p>
+                </div>
+            </div>
         </p-card>
     </div>
+
+    <div class="fees">
+        <div class="fee-header">Transactional Fees</div>
+        <div class="fees-headers">
+            <div class="fees-header">Threshold</div>
+            <div class="fees-header">Deposit</div>
+            <div class="fees-header">Reversal</div>
+        </div>
+        <div class="fees-contents" *ngFor="let fee of fees">
+            <div class="fees-content">{{fee.threshold}}</div>
+            <div class="fees-content">{{fee.deposit}}</div>
+            <div class="fees-content">{{fee.reversal}}</div>
+        </div>
+    </div>
+    <div class="minmax">
+        <div>Maximum Deposit - {{fees[0].threshold}}</div>
+        <div>Minimum Deposit - {{fees[fees.length - 1].threshold}}</div>
+    </div>
 </div>
+
+<p-dialog header="Withdrawal Details" [(visible)]="showDialog" [style]="{width: '60vw'}">
+    <div class="row">
+        <div class="desc">Deposit Id</div>
+        <div class="value">{{deposit.index}}</div>
+    </div>
+    <div class="separator"></div>
+    <div class="row">
+        <div class="desc">Withdrawal Code</div>
+        <div class="value">{{withdrawalCode}}</div>
+    </div>
+    <div class="separator"></div>
+    <div class="row">
+        <div class="desc">Amount ({{currency}})</div>
+        <div class="value">{{amount}}</div>
+    </div>
+    <div class="separator"></div>
+    <div class="message">Keep the information above secret. Only share with the person who the payment is intended for.</div>
+    <div class="separator"></div>
+    <div class="footer">
+        <button pButton label="Close" (click)="showDialog = false" class="p-button-sm p-button-text p-button-warning p-button-raised"></button>
+    </div>
+</p-dialog>

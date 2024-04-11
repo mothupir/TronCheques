@@ -9,4 +9,7 @@ import { Payment, Payments } from '../model/deposit.model';
 export class HistoryComponent {
   activePayments: Payments = new Payments();
   inactivePayments: Payments = new Payments();
+
+  index = 0;
+  payments: Payment[] = [];
 }

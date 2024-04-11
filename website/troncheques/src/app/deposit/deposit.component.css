@@ -2,7 +2,8 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin: 15px 0;
+    padding: 15px 0;
+    border-bottom: 1px dotted gray;
 }
 
 .header {
@@ -45,13 +46,13 @@
 .details {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .input {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 7px;
 }
 
 .input label {
@@ -68,9 +69,118 @@
     width: 100%;
 }
 
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.desc, .value, .message {
+    font-size: small;
+    width: 100%;
+}
+
+.value {
+    border: 1px dotted var(--primary-color);
+    text-align: end;
+    padding: 0 5px;
+    border-radius: 3px;
+}
+
+.message {
+    font-style: italic;
+    color: var(--primary-color);
+}
+
+.footer {
+    display: flex;
+    justify-content: end;
+    margin-top: 10px;
+}
+
+.separator {
+    border-bottom: 1px solid gray;
+    margin: 5px 0;
+}
+
+.steps, .step {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-style: italic;
+    font-size: small;
+}
+
+.step {
+    gap: 5px;
+}
+
+.step span {
+    font-weight: 100;
+    border-bottom: 1px dotted gray;
+    padding-bottom: 5px;
+}
+
+.step p {
+    font-weight: 100;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.fees {
+    display: flex;
+    flex-direction: column;
+}
+
+.fee-header {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px dotted gray;
+    border-top: 1px dotted gray;
+    padding: 5px;
+    font-size: large;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.fees-headers, .fees-contents {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.fees-headers {
+    background: #2a323d;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.fees-contents {
+    padding: 3px 15px;
+    font-size: small;
+    font-style: italic;
+    border-radius: 3px;
+}
+
+.fees-contents:nth-of-type(odd) {
+    background: gray;
+}
+
+.fees-header {
+}
+
+.minmax {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    font-size: small;
+    font-style: italic;
+    color: var(--primary-color);
+}
 
 @media only screen and (max-width: 840px) {
-    .content {
+    .content, row {
         flex-direction: column;
     }
 }
