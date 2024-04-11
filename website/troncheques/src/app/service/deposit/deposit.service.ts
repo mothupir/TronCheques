@@ -35,6 +35,14 @@ export class DepositService {
     return await this.contract.getOwner().call();
   }
 
+  async getStatistics() {
+    
+  }
+
+  async updateFees(fees: any) {
+
+  }
+
   async makeDeposit(address: string, amount: number, code: string, desc: string) {
 
   }

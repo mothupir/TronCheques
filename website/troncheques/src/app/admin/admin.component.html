@@ -9,76 +9,83 @@
             <button pButton label="Deposit" icon="pi pi-user-plus" iconPos="right" class="p-button-raised p-button-text p-button-info"></button>
         </div>
 
-        <div class="stats">
-            <div class="row">
-                <div class="datapoint">Total Payments</div>
-                <div class="data">10034</div>
-            </div>
-            <div class="separator"></div>
-            <div class="row">
-                <div class="datapoint">Active Payments</div>
-                <div class="data">10034</div>
-            </div>
-            <div class="separator"></div>
-            <div class="row">
-                <div class="datapoint">Total Value</div>
-                <div class="data">10034</div>
-            </div>
-            <div class="separator"></div>
-            <div class="row">
-                <div class="datapoint">Active Value</div>
-                <div class="data">10034</div>
-            </div>
-            <div class="separator"></div>
-            <div class="row">
-                <div class="datapoint">Account Value</div>
-                <div class="data">10034</div>
-            </div>
-        </div>
+        <div class="separator"></div>
 
         <p-tabView>
             <p-tabPanel header="Search">
-                <div>
-                    Content
+                <div class="search">
+                    <p-dropdown [options]="searchCriteria" [(ngModel)]="searchCriterion" optionLabel="name" [showClear]="true" placeholder="Search Criteria" styleClass="p-dropdown-sm"></p-dropdown>
+                    <input pInputText [(ngModel)]="searchValue" placeholder="Search Value">
+                    <button pButton (click)="search()" label="Search" class="p-button-raised p-button-text" style="width: 120px;" icon="pi pi-search" iconPos="right"></button>
                 </div>
             </p-tabPanel>
 
             <p-tabPanel header="Statistics">
-                <div>
-                    Content
+                <div class="stats">
+                    <div class="row">
+                        <div class="datapoint">Total Payments</div>
+                        <div class="data">{{totalPayments}}</div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="row">
+                        <div class="datapoint">Active Payments</div>
+                        <div class="data">{{activePayments}}</div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="row">
+                        <div class="datapoint">Total Value (TRX)</div>
+                        <div class="data">{{totalValue}}</div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="row">
+                        <div class="datapoint">Active Value (TRX)</div>
+                        <div class="data">{{activeValue}}</div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="row">
+                        <div class="datapoint">Account Value (TRX)</div>
+                        <div class="data">{{accountValue}}</div>
+                    </div>
                 </div>
             </p-tabPanel>
 
             <p-tabPanel header="Fees">
-                <p-table [value]="fees" [tableStyle]="{ 'min-width': '50rem' }">
-                    <ng-template pTemplate="caption">
-                        <div class="flex align-items-center justify-content-between">
-                            Transaction Fees
-                            <button pButton label="Add" class="p-button-raised p-button-sm p-button-text" icon="pi pi-plus"></button>
+                <div class="fees">
+                    <div class="fee-header">
+                        <div>Transactional Fees</div>
+                        <button pButton (click)="showAddEditFeeDialog(-1)" label="Add" icon="pi pi-plus" class="p-button-sm p-button-raised p-button-info p-button-text"></button>
+                    </div>
+                    <div class="fees-headers">
+                        <div class="fees-header">Threshold (TRX)</div>
+                        <div class="fees-header">Deposit (TRX)</div>
+                        <div class="fees-header">Reversal (TRX)</div>
+                        <div class="fees-header">Action</div>
+                    </div>
+                    <div class="fees-contents" *ngFor="let fee of fees">
+                        <div class="fees-content">{{fee.threshold}}</div>
+                        <div class="fees-content">{{fee.deposit}}</div>
+                        <div class="fees-content">{{fee.reversal}}</div>
+                        <div class="action">
+                            <button pButton (click)="showAddEditFeeDialog(fee.id)" icon="pi pi-pencil" class="p-button-info p-button-text p-button-sm p-button-rounded" pTooltip="edit"></button>
+                            <button pButton (click)="removeFee(fee.id)" icon="pi pi-trash" class="p-button-danger p-button-text p-button-sm p-button-rounded" pTooltip="remove"></button>
                         </div>
-                    </ng-template>
-
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>Threshold</th>
-                            <th>Deposit Fees</th>
-                            <th>Reversal Fees</th>
-                            <th>Edit</th>
-                        </tr>
-                    </ng-template>
-
-                    <ng-template pTemplate="body" let-fee>
-                        <tr>
-                            <td>{{ fee.threshold }}</td>
-                            <td>{{ fee.deposit }}</td>
-                            <td>{{ fee.reversal }}</td>
-                            <td>
-                                <button pButton icon="pi pi-pencil" class="p-button-text p-button-info"></button>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="minmax">
+                        <div>Maximum Deposit - {{maximum}}</div>
+                        <div>Minimum Deposit - {{minimum}}</div>
+                    </div>
+                    <button pButton label="Update" icon="pi pi-save" iconPos="right" class="p-button-warning p-button-sm p-button-text p-button-raised" style="width: 100px;"></button>
+                </div>
             </p-tabPanel>
         </p-tabView>
     </div>
 </div>
+
+<p-dialog header="Header" [(visible)]="addEditVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <p class="m-0">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+</p-dialog>
