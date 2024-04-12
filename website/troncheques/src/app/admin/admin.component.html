@@ -5,11 +5,12 @@
 
     <div class="content">
         <div class="options">
-            <button pButton label="Withdraw" icon="pi pi-user-minus" iconPos="right" class="p-button-raised p-button-text p-button-info"></button>
-            <button pButton label="Deposit" icon="pi pi-user-plus" iconPos="right" class="p-button-raised p-button-text p-button-info"></button>
+            <div>Administration</div>
+            <div>
+                <button pButton label="Withdraw" icon="pi pi-user-minus" iconPos="right" class="p-button-raised p-button-sm p-button-text p-button-info"></button>
+                <button pButton label="Deposit" icon="pi pi-user-plus" iconPos="right" class="p-button-raised p-button-sm p-button-text p-button-info"></button>
+            </div>
         </div>
-
-        <div class="separator"></div>
 
         <p-tabView>
             <p-tabPanel header="Search">
@@ -17,6 +18,76 @@
                     <p-dropdown [options]="searchCriteria" [(ngModel)]="searchCriterion" optionLabel="name" [showClear]="true" placeholder="Search Criteria" styleClass="p-dropdown-sm"></p-dropdown>
                     <input pInputText [(ngModel)]="searchValue" placeholder="Search Value">
                     <button pButton (click)="search()" label="Search" class="p-button-raised p-button-text" style="width: 120px;" icon="pi pi-search" iconPos="right"></button>
+                </div>
+
+                <div class="separator"></div>
+
+                <p-scrollPanel class="panel" [style]="{ width: '100%', height: '60vh' }">
+                    <div class="{{p.active ? 'transaction' : 'transaction2'}}" *ngFor="let p of payments.payments">
+                        <div class="left">
+                            <div class="details">
+                                <div class="name">Deposit ID:</div>
+                                <div class="value">13456789</div>
+                            </div>
+                            <div class="separator2"></div>
+                            <div class="details">
+                                <div class="name">Reference:</div>
+                                <div class="value">Mothupi Mike Ramogayana</div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button pButton (click)="showReverseConfirmationPopup(p.index, $event)" icon="pi pi-minus-circle"[disabled]="p.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded"></button>
+                            <button pButton (click)="showViewDialog(p.index)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded"></button>
+                        </div>
+                    </div>
+                </p-scrollPanel>
+
+                <div class="separator"></div>
+
+                <div class="nextback">
+                    <button pButton label="Prev" icon="pi pi-angle-left" class="p-button-text p-button-sm p-button-raised p-button-warning"></button>
+                    <button pButton label="Next" icon="pi pi-angle-right" iconPos="right" class="p-button-text p-button-sm p-button-raised p-button-info"></button>
+                </div>
+            </p-tabPanel>
+
+            <p-tabPanel header="Fees">
+                <div class="fees">
+                    <div class="fee-header">
+                        <div>Transactional Fees</div>
+                        <button pButton (click)="showAddEditFeeDialog(-1)" label="Add" icon="pi pi-plus" class="p-button-sm p-button-raised p-button-info p-button-text"></button>
+                    </div>
+
+                    <p-scrollPanel class="panel" [style]="{ width: '100%', height: '60vh' }">
+                        <div class="transaction3" *ngFor="let fee of fees">
+                            <div class="left">
+                                <div class="details">
+                                    <div class="name">Threshold (TRX):</div>
+                                    <div class="value">{{fee.threshold}}</div>
+                                </div>
+                                <div class="separator2"></div>
+                                <div class="details">
+                                    <div class="name">Deposit Fee (TRX):</div>
+                                    <div class="value">{{fee.deposit}}</div>
+                                </div>
+                                <div class="separator2"></div>
+                                <div class="details">
+                                    <div class="name">Reversal Fee (TRX):</div>
+                                    <div class="value">{{fee.reversal}}</div>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <button pButton (click)="showAddEditFeeDialog(fee.id)" icon="pi pi-pencil" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded"></button>
+                                <button pButton (click)="removeFee(fee.id)" icon="pi pi-trash" iconPos="right" class="p-button-sm p-button-text p-button-danger p-button-rounded"></button>
+                            </div>
+                        </div>
+                    </p-scrollPanel>
+                </div>
+                <div class="footer">
+                    <div class="minmax">
+                        <div>Maximum Deposit - {{maximum}}</div>
+                        <div>Minimum Deposit - {{minimum}}</div>
+                    </div>
+                    <button pButton (click)="updateFees()" label="Update" icon="pi pi-save" iconPos="right" class="p-button-warning p-button-sm p-button-text p-button-raised" style="width: 100px;"></button>
                 </div>
             </p-tabPanel>
 
@@ -48,44 +119,66 @@
                     </div>
                 </div>
             </p-tabPanel>
-
-            <p-tabPanel header="Fees">
-                <div class="fees">
-                    <div class="fee-header">
-                        <div>Transactional Fees</div>
-                        <button pButton (click)="showAddEditFeeDialog(-1)" label="Add" icon="pi pi-plus" class="p-button-sm p-button-raised p-button-info p-button-text"></button>
-                    </div>
-                    <div class="fees-headers">
-                        <div class="fees-header">Threshold (TRX)</div>
-                        <div class="fees-header">Deposit (TRX)</div>
-                        <div class="fees-header">Reversal (TRX)</div>
-                        <div class="fees-header">Action</div>
-                    </div>
-                    <div class="fees-contents" *ngFor="let fee of fees">
-                        <div class="fees-content">{{fee.threshold}}</div>
-                        <div class="fees-content">{{fee.deposit}}</div>
-                        <div class="fees-content">{{fee.reversal}}</div>
-                        <div class="action">
-                            <button pButton (click)="showAddEditFeeDialog(fee.id)" icon="pi pi-pencil" class="p-button-info p-button-text p-button-sm p-button-rounded" pTooltip="edit"></button>
-                            <button pButton (click)="removeFee(fee.id)" icon="pi pi-trash" class="p-button-danger p-button-text p-button-sm p-button-rounded" pTooltip="remove"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer">
-                    <div class="minmax">
-                        <div>Maximum Deposit - {{maximum}}</div>
-                        <div>Minimum Deposit - {{minimum}}</div>
-                    </div>
-                    <button pButton label="Update" icon="pi pi-save" iconPos="right" class="p-button-warning p-button-sm p-button-text p-button-raised" style="width: 100px;"></button>
-                </div>
-            </p-tabPanel>
         </p-tabView>
     </div>
 </div>
 
-<p-dialog header="Header" [(visible)]="addEditVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-    <p class="m-0">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
+<p-dialog header="Add/Edit Fee" [(visible)]="addEditVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <div class="details-wrapper">
+        <div class="input">
+            <label class="label">Amount</label>
+            <p-inputGroup>
+                <p-inputNumber id="amount" [(ngModel)]="fee.threshold" inputId="minmax" [min]="0" mode="decimal"></p-inputNumber>
+            </p-inputGroup>
+        </div>
+        <div class="input">
+            <label>Deposit Fee (TRX)</label>
+            <p-inputGroup>
+                <p-inputNumber [(ngModel)]="fee.deposit" inputId="minmax" [min]="0" mode="decimal"></p-inputNumber>
+            </p-inputGroup>
+        </div>
+        <div class="input">
+            <label>Reversal Fee (TRX)</label>
+            <p-inputGroup>
+                <p-inputNumber [(ngModel)]="fee.reversal" inputId="minmax" [min]="0" mode="decimal"></p-inputNumber>
+            </p-inputGroup>
+        </div>
+    </div>
+    <div class="separator"></div>
+    <div class="btn-submit">
+        <button pButton (click)="clearFee()" label="Clear" class="p-button-sm p-button-raised p-button-text p-button-warning" style="width: 100px;"></button>
+        <button pButton (click)="addEditFee(fee.id)" label="Accept" class="p-button-sm p-button-raised p-button-outlined p-button-success" style="width: 100px;"></button>
+    </div>
 </p-dialog>
+
+<p-dialog header="Payment Details" [(visible)]="viewVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <div class="details-wrapper">
+        <div class="detail">
+            <div class="detail-name">Reference</div>
+            <div class="detail-value">{{payment.desc}}</div>
+        </div>
+        <div class="detail">
+            <div class="detail-name">Deposit ID</div>
+            <div class="detail-value">{{payment.index}}</div>
+        </div>
+        <div class="detail">
+            <div class="detail-name">Owner Address</div>
+            <div class="detail-value">{{payment.owner}}</div>
+        </div>
+        <div class="detail">
+            <div class="detail-name">Value (TRX)</div>
+            <div class="detail-value">{{payment.value}}</div>
+        </div>
+        <div class="detail">
+            <div class="detail-name">Transaction Fee (TRX)</div>
+            <div class="detail-value">{{payment.fee}}</div>
+        </div>
+        <div class="detail">
+            <div class="detail-name">Is Active</div>
+            <div class="detail-value">{{payment.active}}</div>
+        </div>
+    </div>
+</p-dialog>
+
+<p-confirmDialog acceptButtonStyleClass="p-button-success p-button-raised p-button-sm" rejectButtonStyleClass="p-button-warning p-button-raised p-button-sm p-button-text w-100" acceptIcon="none" acceptLabel="Confirm" rejectIcon="none" rejectLabel="Reject"></p-confirmDialog>
+<p-toast [life]="10000"></p-toast>

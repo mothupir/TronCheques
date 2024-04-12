@@ -21,9 +21,13 @@
     font-weight: 500;
 }
 
-.top {
+.top, .bottom {
     display: flex;
     justify-content: space-between;
+}
+
+.bottom {
+    margin-top: 10px;
 }
 
 .nextback {
@@ -34,29 +38,69 @@
     border-bottom: 1px dotted gray;
 }
 
-.panel {
+.panel, .card {
     width: 100%;
-    height: 70vh;
-    display: flex;
-    flex-direction: column;
 }
 
-.transaction {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid green;
-    border-radius: 5px;
-    padding: 5px 10px;
-    margin-bottom: 10px;
-}
-
-.row {
+.transaction, .transaction2, .detail {
     display: flex;
     justify-content: space-between;
-    font-style: italic;
+    margin: 2px;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px -0 lime;
     font-size: small;
+    font-style: italic;
 }
 
-.submit {
-    margin-top: 10px;
+.transaction:hover {
+    box-shadow: 1px 1px 2px 1px lime;
+}
+
+.transaction2 {
+    box-shadow: 1px 1px 3px -0 orange;
+}
+
+.transaction2:hover {
+    box-shadow: 1px 1px 2px 1px orange;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.separator2 {
+    border-bottom: 1px dotted gray;
+    padding-top: 3px;
+}
+
+.details-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.detail {
+    box-shadow: 1px 1px 3px -0 #7FD8EC;
+    margin: 0;
+    font-size: medium;
+}
+
+.detail:hover {
+    box-shadow: 1px 1px 2px 1px #7FD8EC;
 }

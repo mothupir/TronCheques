@@ -1,7 +1,7 @@
 class Payment {
     index: number = 0;
-    owner: string = "";
     uuid: string = "";
+    owner: string = "";
     value: number = 0;
     fee: number = 0;
     desc: string = "";

@@ -20,11 +20,11 @@
 .options {
     display: flex;
     gap: 15px;
-    justify-content: end;
-    border: 1px solid var(--primary-color);
-    padding: 10px;
-    border-radius: 5px;
-    
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted gray;
+    font-size: x-large;
+    font-weight: 500;
 }
 
 .stats {
@@ -91,7 +91,8 @@
 }
 
 .fees-contents:nth-of-type(odd) {
-    background: gray;
+    background: #7FD8EC;
+    color: black;
 }
 
 .fees-content {
@@ -120,4 +121,104 @@
 .search {
     display: flex;
     gap: 10px;
+}
+
+.nextback {
+    display: flex;
+    justify-content: end;
+}
+
+.transaction, .transaction2, .transaction3, .detail {
+    display: flex;
+    justify-content: space-between;
+    margin: 2px;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px -0 lime;
+    font-size: small;
+    font-style: italic;
+}
+
+.transaction:hover {
+    box-shadow: 1px 1px 2px 1px lime;
+}
+
+.transaction2 {
+    box-shadow: 1px 1px 3px -0 orange;
+}
+
+.transaction2:hover {
+    box-shadow: 1px 1px 2px 1px orange;
+}
+
+.transaction3 {
+    box-shadow: 1px 1px 3px -0 #7FD8EC;
+}
+
+.transaction3:hover {
+    box-shadow: 1px 1px 2px 1px #7FD8EC;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.separator2 {
+    border-bottom: 1px dotted gray;
+    padding-top: 3px;
+}
+
+.details-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.detail {
+    box-shadow: 1px 1px 3px -0 #7FD8EC;
+    margin: 0;
+    font-size: medium;
+}
+
+.detail:hover {
+    box-shadow: 1px 1px 2px 1px #7FD8EC;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.input label {
+    font-size: small;
+    font-style: italic;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.btn-submit {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+    margin-top: 15px;
 }

@@ -39,8 +39,12 @@ export class DepositService {
     
   }
 
-  async updateFees(fees: any) {
+  async getTransactionalFees(): Promise<boolean> {
+    return true;
+  }
 
+  async updateFees(fees: any): Promise<boolean> {
+    return true;
   }
 
   async makeDeposit(address: string, amount: number, code: string, desc: string) {
