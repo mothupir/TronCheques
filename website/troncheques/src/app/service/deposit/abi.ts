@@ -26,8 +26,27 @@ export const abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "cashout",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
-				"name": "addr",
+				"name": "owner",
 				"type": "address"
 			}
 		],
@@ -39,25 +58,30 @@ export const abi = [
 				"type": "bool"
 			}
 		],
-		"stateMutability": "payable",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "uuid",
+				"name": "hash",
 				"type": "string"
 			},
 			{
 				"internalType": "uint256",
-				"name": "value",
+				"name": "amount",
 				"type": "uint256"
 			},
 			{
 				"internalType": "string",
-				"name": "desc",
+				"name": "ref",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
 			}
 		],
 		"name": "deposit",
@@ -70,18 +94,13 @@ export const abi = [
 						"type": "uint256"
 					},
 					{
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
 						"internalType": "string",
-						"name": "uuid",
+						"name": "hash",
 						"type": "string"
 					},
 					{
 						"internalType": "uint256",
-						"name": "value",
+						"name": "amount",
 						"type": "uint256"
 					},
 					{
@@ -91,8 +110,38 @@ export const abi = [
 					},
 					{
 						"internalType": "string",
-						"name": "desc",
+						"name": "ref",
 						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "withdrawn",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reversed",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "blocked",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "withdrawer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
 					},
 					{
 						"internalType": "bool",
@@ -100,7 +149,7 @@ export const abi = [
 						"type": "bool"
 					}
 				],
-				"internalType": "struct Deposit.Payment",
+				"internalType": "struct DepositContract.Deposit",
 				"name": "",
 				"type": "tuple"
 			}
@@ -109,8 +158,95 @@ export const abi = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getBalance",
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getDeposit",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "hash",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "fee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "ref",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "withdrawn",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "reversed",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "blocked",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "withdrawer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "active",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct DepositContract.Deposit",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "getDepositFee",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -125,12 +261,12 @@ export const abi = [
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "range",
+				"name": "index",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "ind",
+				"name": "count",
 				"type": "uint256"
 			}
 		],
@@ -151,18 +287,13 @@ export const abi = [
 								"type": "uint256"
 							},
 							{
-								"internalType": "address",
-								"name": "owner",
-								"type": "address"
-							},
-							{
 								"internalType": "string",
-								"name": "uuid",
+								"name": "hash",
 								"type": "string"
 							},
 							{
 								"internalType": "uint256",
-								"name": "value",
+								"name": "amount",
 								"type": "uint256"
 							},
 							{
@@ -172,8 +303,38 @@ export const abi = [
 							},
 							{
 								"internalType": "string",
-								"name": "desc",
+								"name": "ref",
 								"type": "string"
+							},
+							{
+								"internalType": "address",
+								"name": "owner",
+								"type": "address"
+							},
+							{
+								"internalType": "bool",
+								"name": "withdrawn",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "reversed",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "blocked",
+								"type": "bool"
+							},
+							{
+								"internalType": "address",
+								"name": "withdrawer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
 							},
 							{
 								"internalType": "bool",
@@ -181,65 +342,14 @@ export const abi = [
 								"type": "bool"
 							}
 						],
-						"internalType": "struct Deposit.Payment[]",
-						"name": "withdrawals",
+						"internalType": "struct DepositContract.Deposit[]",
+						"name": "deposits",
 						"type": "tuple[]"
 					}
 				],
-				"internalType": "struct Deposit.Payments",
+				"internalType": "struct DepositContract.Response",
 				"name": "",
 				"type": "tuple"
-			}
-		],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getFees",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "uint256[]",
-						"name": "fees",
-						"type": "uint256[]"
-					},
-					{
-						"internalType": "uint256[]",
-						"name": "thresholds",
-						"type": "uint256[]"
-					}
-				],
-				"internalType": "struct Deposit.Fees",
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getOwner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getWithdrawAddress",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -249,34 +359,21 @@ export const abi = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "to",
+				"name": "user",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "value",
+				"name": "index",
 				"type": "uint256"
 			},
 			{
-				"internalType": "string",
-				"name": "uuid",
-				"type": "string"
+				"internalType": "uint256",
+				"name": "count",
+				"type": "uint256"
 			}
 		],
-		"name": "pay",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "uuid",
-				"type": "string"
-			}
-		],
-		"name": "reverse",
+		"name": "getDepositsByAddress",
 		"outputs": [
 			{
 				"components": [
@@ -286,37 +383,193 @@ export const abi = [
 						"type": "uint256"
 					},
 					{
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "uuid",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "value",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "fee",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "desc",
-						"type": "string"
-					},
-					{
-						"internalType": "bool",
-						"name": "active",
-						"type": "bool"
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "index",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "hash",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "fee",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "ref",
+								"type": "string"
+							},
+							{
+								"internalType": "address",
+								"name": "owner",
+								"type": "address"
+							},
+							{
+								"internalType": "bool",
+								"name": "withdrawn",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "reversed",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "blocked",
+								"type": "bool"
+							},
+							{
+								"internalType": "address",
+								"name": "withdrawer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "active",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct DepositContract.Deposit[]",
+						"name": "deposits",
+						"type": "tuple[]"
 					}
 				],
-				"internalType": "struct Deposit.Payment",
+				"internalType": "struct DepositContract.Response",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getFees",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "min",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "max",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deposit",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reversal",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct DepositContract.Fee[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "getReversalFee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getStatistics",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "numberOfDeposits",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "numberOfWithdrawals",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "numberOfReversals",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalDeposits",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalWithdrawals",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalReversals",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalFees",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "activeValue",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "contractValue",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct DepositContract.Statistic",
 				"name": "",
 				"type": "tuple"
 			}
@@ -327,13 +580,47 @@ export const abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "reverse",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256[]",
-				"name": "feePerThreshold",
+				"name": "uuidArr",
 				"type": "uint256[]"
 			},
 			{
 				"internalType": "uint256[]",
-				"name": "thresholds",
+				"name": "minArr",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "maxArr",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "depositArr",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "reversalArr",
 				"type": "uint256[]"
 			}
 		],
@@ -352,13 +639,28 @@ export const abi = [
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "value",
+				"name": "index",
 				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
 			}
 		],
 		"name": "withdraw",
-		"outputs": [],
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
 	}
 ];
