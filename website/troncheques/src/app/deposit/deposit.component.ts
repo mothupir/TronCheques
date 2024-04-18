@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WalletService } from '../service/wallet/wallet.service';
 import { DepositService } from '../service/deposit/deposit.service';
-import { Payment } from '../model/deposit.model';
+import { Deposit, Fee } from '../model/deposit.model';
 import { SpinnerService } from '../service/spinner/spinner.service';
 
 @Component({
@@ -18,15 +18,17 @@ export class DepositComponent {
   
   showDialog = false;
 
-  deposit: Payment = new Payment();
-  fees: any[] = [
-    { threshold: 100000, deposit: 1000, reversal: 500 },
-    { threshold: 100000, deposit: 1000, reversal: 500 },
-    { threshold: 100000, deposit: 1000, reversal: 500 },
-    { threshold: 100000, deposit: 1000, reversal: 500 },
-    { threshold: 100000, deposit: 1000, reversal: 500 },
-    { threshold: 100000, deposit: 1000, reversal: 500 },
-    { threshold: 100000, deposit: 1000, reversal: 500 },
+  deposit: Deposit = new Deposit();
+  fees: Fee[] = [
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
+    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
   ];
 
   invalid = "ng-invalid";

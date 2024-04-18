@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DepositService } from '../service/deposit/deposit.service';
-import { Payment, Payments } from '../model/deposit.model';
+import { Fee, Deposit, Response, Statistic } from '../model/deposit.model';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 
 interface SearchCriterion {
@@ -14,31 +14,13 @@ interface SearchCriterion {
   styleUrl: './admin.component.css'
 })
 export class AdminComponent {
-  fee: any = { id: 0, threshold: 0, deposit: 0, reversal: 0 };
-
-  fees: any[] = [
-    { id: 0, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 1, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 2, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 3, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 4, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 5, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 6, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 6, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 6, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 6, threshold: 100000, deposit: 1000, reversal: 500 },
-    { id: 6, threshold: 100000, deposit: 1000, reversal: 500 },
-  ];
+  fee: Fee = new Fee();
+  fees: Fee[] = [];
 
   minimum: number = 0;
   maximum: number = 0;
 
-  totalPayments: number = 0;
-  activePayments: number = 0;
-  totalValue: number = 0;
-  activeValue: number = 0;
-  accountValue: number = 0;
-
+  statistics: Statistic = new Statistic();
 
   searchCriterion!: SearchCriterion;
   searchValue = ""
@@ -46,8 +28,9 @@ export class AdminComponent {
     { code: "index", name: "Withdrawal Code" },
     { code: "owner", name: "Deposit Owner" }
   ];
-  payments: Payments = new Payments();
-  payment: Payment = new Payment();
+
+  response: Response = new Response();
+  deposit: Deposit = new Deposit();
 
   addEditVisible = false;
   viewVisible = false;
@@ -59,20 +42,16 @@ export class AdminComponent {
     ) {}
 
   ngOnInit() {
-    let payment = new Payment();
-    payment.active = true;
-    this.payments.payments.push(new Payment(), payment, new Payment());
+    let deposit = new Deposit();
+    deposit.active = true;
+    this.response.deposits.push(new Deposit(), deposit, new Deposit());
   }
 
   // Statistics
   async getStatistics() {
     await this.depositService.getStatistics().then((data: any) => {
-      this.totalPayments = data.totalPayments;
-      this.activePayments = data.activePayments;
-      this.totalValue = data.totalValue;
-      this.activeValue = data.activeValue;
-      this.accountValue = data.accountValue;
-    })
+      
+    });
   }
 
   // Fees
@@ -88,11 +67,19 @@ export class AdminComponent {
 
   showAddEditFeeDialog(id: number) {
     if (id < 0) {
-      this.fee = { id: -1, threshold: 0, deposit: 0, reversal: 0 };
+      this.fee.id = -1;
+      this.fee.min = 0;
+      this.fee.max = 0;
+      this.fee.deposit = 0;
+      this.fee.reversal = 0;
     } else {
       let index = this.fees.findIndex((f: any) => f.id == id);
       if (index > -1) {
-        this.fee = { id: this.fees[index].id, threshold: this.fees[index].threshold, deposit: this.fees[index].deposit, reversal: this.fees[index].reversal };
+        this.fee.id = this.fees[index].id;
+        this.fee.min = this.fees[index].min;
+        this.fee.max = this.fees[index].max;
+        this.fee.deposit = this.fees[index].deposit;
+        this.fee.reversal = this.fees[index].reversal;
       }
     }
     this.addEditVisible = true;
@@ -100,9 +87,12 @@ export class AdminComponent {
 
   addEditFee(id: number) {
     if (id < 0) {
-      let newId: number = Math.max(...this.fees.map(f => f.id));
       this.fees.push(this.fee);
-      this.fee = { id: newId, threshold: 0, deposit: 0, reversal: 0 };
+      this.fee.id = Math.max(...this.fees.map(f => f.id)) + 1;
+      this.fee.min = 0;
+      this.fee.max = 0;
+      this.fee.deposit = 0;
+      this.fee.reversal = 0;
     } else {
       let index = this.fees.findIndex((f: any) => f.id == id);
       if (index > -1) {
@@ -123,7 +113,10 @@ export class AdminComponent {
   }
 
   clearFee() {
-    this.fee = { id: 0, threshold: 0, deposit: 0, reversal: 0 };
+    this.fee.min = 0;
+    this.fee.max = 0;
+    this.fee.deposit = 0;
+    this.fee.reversal = 0;
   }
 
   // Search

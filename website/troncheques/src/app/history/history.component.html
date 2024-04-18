@@ -1,72 +1,74 @@
 <div class="wrapper">
-    <div class="header">
-        Header
+    <div class="title">
+        <div>Transaction History</div>
+        <button pButton (click)="getMyDeposits()" label="Refresh" icon="pi pi-refresh" class="p-button-sm p-button-raised p-button-info p-button-text"></button>
     </div>
 
-    <div class="top">
-        <div class="title">Transaction History</div>
-    </div>
-
-    <div class="separator"></div>
-
-    <div class="content">
-        <p-card class="card">
-            <p-scrollPanel class="panel" [style]="{ width: '100%', height: '60vh' }">
-                <div class="{{p.active ? 'transaction' : 'transaction2'}}" *ngFor="let p of payments.payments">
-                    <div class="left">
-                        <div class="details">
-                            <div class="name">Deposit ID:</div>
-                            <div class="value">{{p.index}}</div>
-                        </div>
-                        <div class="separator2"></div>
-                        <div class="details">
-                            <div class="name">Reference:</div>
-                            <div class="value">{{p.desc}}</div>
-                        </div>
-                    </div>
-                    <div class="actions">
-                        <button pButton (click)="showReverseConfirmationPopup(p.index, $event)" icon="pi pi-minus-circle"[disabled]="p.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded" pTooltip="Reverse"></button>
-                        <button pButton (click)="showViewDialog(p.index)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded" pTooltip="View"></button>
-                    </div>
-                </div>
-            </p-scrollPanel>
-
-            <div class="bottom">
-                <div class="title"></div>
-                <div class="nextback">
-                    <button pButton label="Prev" class="p-button-raised p-button-sm p-button-text p-button-warning" icon="pi pi-angle-left"></button>
-                    <button pButton label="Next" class="p-button-raised p-button-sm p-button-text p-button-info" icon="pi pi-angle-right" iconPos="right"></button>
-                </div>
+    <p-scrollPanel class="panel" [style]="{ width: '100%', height: '70vh' }">
+        <div class="card {{dep.active ? 'card-success' : 'card-warning'}}" *ngFor="let dep of response.deposits">
+            <div class="detail">
+                <div class="name">Deposit ID:</div>
+                <div class="separator"></div>
+                <div class="value">{{dep.index}}</div>
             </div>
-        </p-card>
+            <div class="detail">
+                <div class="name">Reference:</div>
+                <div class="separator"></div>
+                <div class="value">{{dep.ref ? dep.ref : "N/A"}}</div>
+            </div>
+            <div class="actions">
+                <button pButton (click)="showReverseConfirmationPopup(dep.index, $event)" icon="pi pi-minus-circle"[disabled]="dep.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded" pTooltip="Reverse"></button>
+                <button pButton (click)="showViewDialog(dep.index)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded" pTooltip="View"></button>
+            </div>
+        </div>
+    </p-scrollPanel>
+
+    <div class="bottom">
+        <div></div>
+        <div class="nextback">
+            <button pButton label="Prev" class="p-button-raised p-button-sm p-button-text p-button-warning" icon="pi pi-angle-left"></button>
+            <button pButton label="Next" class="p-button-raised p-button-sm p-button-text p-button-info" icon="pi pi-angle-right" iconPos="right"></button>
+        </div>
     </div>
 </div>
 
-<p-dialog header="Payment Details" [(visible)]="viewVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+<p-dialog header="Deposit Details" [(visible)]="viewVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
     <div class="details-wrapper">
         <div class="detail">
             <div class="detail-name">Reference</div>
-            <div class="detail-value">{{payment.desc}}</div>
+            <div class="detail-value">{{deposit.ref}}</div>
         </div>
         <div class="detail">
             <div class="detail-name">Deposit ID</div>
-            <div class="detail-value">{{payment.index}}</div>
+            <div class="detail-value">{{deposit.index}}</div>
         </div>
         <div class="detail">
             <div class="detail-name">Owner Address</div>
-            <div class="detail-value">{{payment.owner}}</div>
+            <div class="detail-value">{{deposit.owner}}</div>
         </div>
         <div class="detail">
             <div class="detail-name">Value (TRX)</div>
-            <div class="detail-value">{{payment.value}}</div>
+            <div class="detail-value">{{deposit.amount}}</div>
         </div>
         <div class="detail">
             <div class="detail-name">Transaction Fee (TRX)</div>
-            <div class="detail-value">{{payment.fee}}</div>
+            <div class="detail-value">{{deposit.fee}}</div>
         </div>
         <div class="detail">
             <div class="detail-name">Is Active</div>
-            <div class="detail-value">{{payment.active}}</div>
+            <div class="detail-value">{{deposit.active}}</div>
+        </div>
+        <div class="detail">
+            <div class="detail-name">Is Withdrawn</div>
+            <div class="detail-value">{{deposit.withdrawn}}</div>
+        </div>
+        <div class="detail">
+            <div class="detail-name">Is Blocked</div>
+            <div class="detail-value">{{deposit.blocked}}</div>
+        </div>
+        <div class="detail">
+            <div class="detail-name">Timestamp</div>
+            <div class="detail-value">{{deposit.getDate()}}</div>
         </div>
     </div>
 </p-dialog>

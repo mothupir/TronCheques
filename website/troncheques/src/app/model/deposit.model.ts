@@ -1,12 +1,17 @@
-class Payment {
+class Deposit {
     index: number = 0;
+    hash: string = "";
     uuid: string = "";
-    owner: string = "";
-    value: number = 0;
+    amount: number = 0;
     fee: number = 0;
-    desc: string = "";
-    active: boolean = false;
+    ref: string = "";
+    owner: string = "";
+    withdrawn: boolean = false;
+    reversed: boolean = false;
+    blocked: boolean = false;
+    withdrawer: string = "";
     timestamp: number = 0;
+    active: boolean = false;
 
     getDate() {
         return new Date(this.timestamp);
@@ -17,11 +22,31 @@ class Payment {
     }
 }
 
-class Payments {
+class Fee {
+    id: number = 0;
+    min: number = 0;
+    max: number = 0;
+    deposit: number = 0;
+    reversal: number = 0;
+}
+
+class Statistic {
+    numberOfDeposits: number = 0;
+    numberOfWithdrawals: number = 0;
+    numberOfReversals: number = 0;
+    totalDeposits: number = 0;
+    totalWithdrawals: number = 0;
+    totalReversals: number = 0;
+    totalFees: number = 0;
+    activeValue: number = 0;
+    contractValue: number = 0;
+}
+
+class Response {
     index: number = 0;
-    payments: Payment[] = [];
+    deposits: Deposit[] = [];
 }
 
 export {
-    Payment, Payments
+    Deposit, Fee, Statistic, Response
 }

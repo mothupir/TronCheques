@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Payment, Payments } from '../model/deposit.model';
+import { Deposit, Response } from '../model/deposit.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DepositService } from '../service/deposit/deposit.service';
 
@@ -9,13 +9,10 @@ import { DepositService } from '../service/deposit/deposit.service';
   styleUrl: './history.component.css'
 })
 export class HistoryComponent {
-  activePayments: Payments = new Payments();
-  inactivePayments: Payments = new Payments();
-
   viewVisible = false;
 
-  payments: Payments = new Payments();
-  payment: Payment = new Payment();
+  response: Response = new Response();
+  deposit: Deposit = new Deposit();
 
   constructor(
     private depositService: DepositService,
@@ -24,34 +21,28 @@ export class HistoryComponent {
     ) {}
 
   ngOnInit() {
-    let payment = new Payment();
-    payment.active = true;
-    payment.desc = "Mothupi Mike Ramogayana";
-    this.payments.payments.push(
-      new Payment(), 
-      payment, 
-      new Payment(),
-      new Payment(), 
-      payment, 
-      new Payment(),
-      new Payment(), 
-      payment, 
-      new Payment(),
-      new Payment(), 
-      payment, 
-      new Payment(),
-      new Payment(), 
-      payment, 
-      new Payment(),
-      new Payment(), 
-      payment, 
-      new Payment(),
-      new Payment(), 
-      payment, 
-      new Payment(),
-      new Payment(), 
-      payment, 
-      new Payment(),
+    let deposit = new Deposit();
+    deposit.active = true;
+    deposit.ref = "Mothupi Mike Ramogayana";
+    this.response.deposits.push(
+      new Deposit(), 
+      deposit, 
+      new Deposit(),
+      new Deposit(), 
+      deposit, 
+      new Deposit(),
+      new Deposit(), 
+      deposit, 
+      new Deposit(),
+      new Deposit(), 
+      deposit, 
+      new Deposit(),
+      new Deposit(), 
+      deposit, 
+      new Deposit(),
+      new Deposit(), 
+      deposit, 
+      new Deposit(),
     );
   }
 
