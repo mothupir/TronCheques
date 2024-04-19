@@ -28,6 +28,17 @@ class Fee {
     max: number = 0;
     deposit: number = 0;
     reversal: number = 0;
+
+    constructor(fee?: Fee) {
+        if (fee) {
+            this.id = fee.id;
+            this.min = fee.min;
+            this.max = fee.max;
+            this.deposit = fee.deposit;
+            this.reversal = fee.reversal;
+
+        }
+    }
 }
 
 class Statistic {

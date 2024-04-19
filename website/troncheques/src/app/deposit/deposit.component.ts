@@ -19,17 +19,9 @@ export class DepositComponent {
   showDialog = false;
 
   deposit: Deposit = new Deposit();
-  fees: Fee[] = [
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-    { id: 0, min:0, max: 100000, deposit: 1000, reversal: 500 },
-  ];
+  fees: Fee[] = [];
+  min: number = 0;
+  max: number = 0;
 
   invalid = "ng-invalid";
   dirty = "ng-dirty";

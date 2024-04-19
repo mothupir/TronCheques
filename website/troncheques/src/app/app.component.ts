@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { WalletService } from './service/wallet/wallet.service';
 import { DepositService } from './service/deposit/deposit.service';
+import { SpinnerService } from './service/spinner/spinner.service';
+import { WithdrawService } from './service/withdraw/withdraw.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +22,7 @@ export class AppComponent {
   connected = false;
   visible = false;
 
-  constructor(private walletService: WalletService, private depositService: DepositService) {
+  constructor(private walletService: WalletService, private depositService: DepositService, private withdrawService: WithdrawService, private spinner: SpinnerService) {
     this.connected = this.walletService.tronLink.connected;
     if (this.connected) {
       this.items = this.items.map(item => {
@@ -33,8 +35,17 @@ export class AppComponent {
     }
   }
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     this.onNavClick(this.getUrl());
+
+    this.spinner.show();
+
+    
+    await this.depositService.connect();
+    //await this.withdrawService.connect();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 5000);
   }
 
   getUrl(): string {
