@@ -5,6 +5,7 @@ import { Buffer } from 'buffer';
 import { environment } from '../../../environments/environment';
 import { Fee, Statistic } from '../../model/deposit.model';
 import { throwError } from 'rxjs';
+import { WalletService } from '../wallet/wallet.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,8 @@ export class DepositService {
 
   contract: any;
   tronWeb: any;
+
+  constructor(private wallet: WalletService) {}
 
   async connect() {
     this.tronWeb = window.tronWeb;
@@ -71,8 +74,12 @@ export class DepositService {
   // End - Fees
 
   // Begin - Deposit
-  async deposit(address: string, amount: number, code: string, desc: string) {
+  async depositWithPrivateKey(privateKey: string, amount: number, desc: string) {
     
+  }
+
+  async depositWithWallet(amount: number, desc: string) {
+
   }
 
   async reverse(index: number) {
@@ -89,6 +96,16 @@ export class DepositService {
 
   async getMyDeposits(index: number, count: number, address: string) {
 
+  }
+  
+  async generate() {
+    const length = Math.floor(Math.random() * 9) + 8;
+    let str = '';
+    Array.from({length}).some(() => {
+      str += Math.random().toString(36).slice(2);
+      return str.length >= length;
+    });
+    return str.slice(0, length).toUpperCase();
   }
   // End - Deposit
 }

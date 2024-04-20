@@ -45,7 +45,7 @@ export class AppComponent {
     //await this.withdrawService.connect();
     setTimeout(() => {
       this.spinner.hide();
-    }, 5000);
+    }, 100);
   }
 
   getUrl(): string {

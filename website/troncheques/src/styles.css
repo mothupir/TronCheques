@@ -2,6 +2,7 @@
 @import "primeflex/primeflex.css";
 @import "primeicons/primeicons.css";
 @import "../node_modules/primeng/resources/themes/bootstrap4-dark-purple/theme.css";
+/*@import "../node_modules/primeng/resources/themes/luna-pink/theme.css";*/
 
 .wrapper {
     display: flex;

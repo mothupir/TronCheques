@@ -94,6 +94,25 @@
     flex-direction: column;
 }
 
+.or {
+    text-align: center;
+    width: 100%;
+    font-size: small;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 3px;
+}
+
+.w-100 {
+    width: 320px;
+}
+
 @media only screen and (max-width: 840px) {
     .content {
         flex-direction: column;

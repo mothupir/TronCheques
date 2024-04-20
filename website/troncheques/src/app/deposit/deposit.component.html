@@ -3,25 +3,10 @@
         <p-card header="Deposit" class="deposit">
             <div class="details">
                 <div class="input">
-                    <label class="label">Wallet Address</label>
-                    <p-inputGroup>
-                        <input type="text" id="walletAddress" [(ngModel)]="walletAddress" pInputText placeholder="Wallet Address" />
-                        <button type="button" (click)="useConnectedWallet()" pButton icon="pi pi-wallet" class="p-button-secondary" pTooltip="Click to paste connected wallet address"></button>
-                    </p-inputGroup>
-                </div>
-                
-                <div class="input">
                     <label class="label">Amount</label>
                     <p-inputGroup>
-                        <p-inputNumber id="amount" [(ngModel)]="amount" inputId="minmax" [min]="0"[max]="99999999" mode="decimal" placeholder="Withdrawal Code"></p-inputNumber>
-                        <p-inputGroupAddon>
-                            <label for="sun">SUN</label>
-                            <p-radioButton name="sun" value="sun" [(ngModel)]="currency" inputId="sun"></p-radioButton>
-                        </p-inputGroupAddon>
-                        <p-inputGroupAddon>
-                            <label for="trx">TRX</label>
-                            <p-radioButton name="trx" value="trx" [(ngModel)]="currency" inputId="trx"></p-radioButton>
-                        </p-inputGroupAddon>
+                        <p-inputNumber id="amount" [(ngModel)]="amount" inputId="minmax" [min]="0" mode="decimal" placeholder="Amount"></p-inputNumber>
+                        <button pButton label="TRX" class="p-button-outlined p-button-secondary" disabled></button>
                     </p-inputGroup>
                 </div>
     
@@ -49,7 +34,7 @@
                 <div class="step">
                     <span>Step 2 - Amount/Value</span>
                     <p class="m-0">
-                        Enter the amount/value you want to deposit. Choose the currency you wanna deposit in, sun/trx. Take note of the minimun/maximum amount in the fees section below.
+                        Enter the amount/value you want to deposit. Choose the currency you wanna deposit in, sun/trx. Take note of the minimun/maximum fees in the "Transactional Fees" section below.
                     </p>
                 </div>
                 <div class="step">
@@ -108,19 +93,19 @@
     </div>
 </div>
 
-<p-dialog header="Withdrawal Details" [(visible)]="showDialog" [style]="{width: '60vw'}">
-    <div class="row">
-        <div class="desc">Deposit Id</div>
+<p-dialog header="Withdrawal Details" [draggable]="false" [modal]="true" [(visible)]="showDialog" [style]="{width: '60vw'}">
+    <div class="detail">
+        <div class="name">Deposit Id</div>
         <div class="value">{{deposit.index}}</div>
     </div>
     <div class="separator"></div>
     <div class="row">
-        <div class="desc">Withdrawal Code</div>
+        <div class="name">Withdrawal Code</div>
         <div class="value">{{withdrawalCode}}</div>
     </div>
     <div class="separator"></div>
     <div class="row">
-        <div class="desc">Amount ({{currency}})</div>
+        <div class="name">Amount ({{currency}})</div>
         <div class="value">{{amount}}</div>
     </div>
     <div class="separator"></div>
@@ -128,5 +113,21 @@
     <div class="separator"></div>
     <div class="footer">
         <button pButton label="Close" (click)="showDialog = false" class="p-button-sm p-button-text p-button-warning p-button-raised"></button>
+    </div>
+</p-dialog>
+
+<p-dialog header="Sign Transaction" [draggable]="false" [modal]="true" [(visible)]="showConfirmDialog" [style]="{width: '500px'}">
+    <div class="detail">
+        <label class="label">Sign With Wallet</label>
+        <div class="row">
+            <p-dropdown [options]="walletList" [(ngModel)]="wallet" optionLabel="name" placeholder="Select Wallet" autoWidth="false" [style]="{width: '380px'}"></p-dropdown>
+            <button pButton (click)="depositWithWallet()" label="Sign" icon="pi pi-wallet" iconPos="right" class="p-button-raised p-button-outlined"></button>
+        </div>
+        <div class="or">OR</div>
+        <label class="label">Sign With Private Key</label>
+        <div class="row">
+            <input pInputText placeholder="Private Key" style="width: 380px;">
+            <button pButton (click)="depositWithPrivateKey()" label="Sign" icon="pi pi-user-edit" iconPos="right" class="p-button-raised p-button-outlined"></button>
+        </div>
     </div>
 </p-dialog>
