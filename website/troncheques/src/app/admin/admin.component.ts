@@ -78,7 +78,7 @@ export class AdminComponent {
 
   showAddEditFeeDialog(id: number) {
     if (id < 0) {
-      this.fee.id = Math.max(...this.fees.map(f => f.id)) + 1;
+      this.fee.id = this.fees.length > 0 ?Math.max(...this.fees.map(f => f.id)) + 1 : 0;
       this.fee.min = 0;
       this.fee.max = 0;
       this.fee.deposit = 0;

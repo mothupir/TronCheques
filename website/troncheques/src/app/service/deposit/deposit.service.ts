@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { abi } from './abi';
-import * as crypto from 'crypto-js';
-import { Buffer } from 'buffer';
 import { environment } from '../../../environments/environment';
 import { Fee, Statistic } from '../../model/deposit.model';
-import { throwError } from 'rxjs';
 import { WalletService } from '../wallet/wallet.service';
 
 @Injectable({
@@ -40,10 +37,10 @@ export class DepositService {
       data.forEach((d: any) => {
         let fee: Fee = new Fee();
         fee.id = this.tronWeb.BigNumber(d[0]._hex).toNumber();
-        fee.min = this.tronWeb.BigNumber(d[1]._hex).toNumber();
-        fee.max = this.tronWeb.BigNumber(d[2]._hex).toNumber();
-        fee.deposit = this.tronWeb.BigNumber(d[3]._hex).toNumber();
-        fee.reversal = this.tronWeb.BigNumber(d[4]._hex).toNumber();
+        fee.min = this.tronWeb.fromSun(this.tronWeb.BigNumber(d[1]._hex).toNumber());
+        fee.max = this.tronWeb.fromSun(this.tronWeb.BigNumber(d[2]._hex).toNumber());
+        fee.deposit = this.tronWeb.fromSun(this.tronWeb.BigNumber(d[3]._hex).toNumber());
+        fee.reversal = this.tronWeb.fromSun(this.tronWeb.BigNumber(d[4]._hex).toNumber());
         fees.push(fee);
         return fees;
       });
@@ -56,14 +53,14 @@ export class DepositService {
 
   async updateFees(fees: Fee[]) {
     let idList = fees.map(fee => fee.id);
-    let minList = fees.map(fee => fee.min);
-    let maxList = fees.map(fee => fee.max);
-    let depList = fees.map(fee => fee.deposit);
-    let revList = fees.map(fee => fee.reversal);
+    let minList = fees.map(fee => this.tronWeb.toSun(fee.min));
+    let maxList = fees.map(fee => this.tronWeb.toSun(fee.max));
+    let depList = fees.map(fee => this.tronWeb.toSun(fee.deposit));
+    let revList = fees.map(fee => this.tronWeb.toSun(fee.reversal));
 
     try {
       await this.contract.setFees(idList, minList, maxList, depList, revList).send({
-        feeLimit:1000,
+        feeLimit:15_000_000_000,
         callValue:0,
         shouldPollResponse:true
       });
