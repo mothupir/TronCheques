@@ -48,7 +48,6 @@ export class AdminComponent {
     deposit.active = true;
     this.response.deposits.push(new Deposit(), deposit, new Deposit());
     await this.getTransactionalFees();
-    console.log("Init Fees:", this.fees);
   }
 
   // Statistics

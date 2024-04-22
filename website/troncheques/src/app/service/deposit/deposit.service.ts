@@ -34,13 +34,14 @@ export class DepositService {
 
     try {
       const data = await this.contract.getFees().call();
+      console.log("Data:", data);
       data.forEach((d: any) => {
         let fee: Fee = new Fee();
-        fee.id = this.tronWeb.BigNumber(d[0]._hex).toNumber();
-        fee.min = this.tronWeb.fromSun(this.tronWeb.BigNumber(d[1]._hex).toNumber());
-        fee.max = this.tronWeb.fromSun(this.tronWeb.BigNumber(d[2]._hex).toNumber());
-        fee.deposit = this.tronWeb.fromSun(this.tronWeb.BigNumber(d[3]._hex).toNumber());
-        fee.reversal = this.tronWeb.fromSun(this.tronWeb.BigNumber(d[4]._hex).toNumber());
+        fee.id = this.tronWeb.BigNumber(d.id._hex).toNumber();
+        fee.min = this.tronWeb.fromSun(this.tronWeb.BigNumber(d.min._hex).toNumber());
+        fee.max = this.tronWeb.fromSun(this.tronWeb.BigNumber(d.max._hex).toNumber());
+        fee.deposit = this.tronWeb.fromSun(this.tronWeb.BigNumber(d.deposit._hex).toNumber());
+        fee.reversal = this.tronWeb.fromSun(this.tronWeb.BigNumber(d.reversal._hex).toNumber());
         fees.push(fee);
         return fees;
       });
