@@ -58,6 +58,12 @@ class Response {
     deposits: Deposit[] = [];
 }
 
+class Config {
+    apiKey: string;
+    fullHost: string;
+    contractAddress: string;
+}
+
 export {
-    Deposit, Fee, Statistic, Response
+    Deposit, Fee, Statistic, Response, Config
 }

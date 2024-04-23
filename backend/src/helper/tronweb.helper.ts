@@ -2,9 +2,9 @@ import TronWeb from 'tronweb';
 
 export const connectToChain = (privateKey: string = process.env.PRIVATE_KEY) => {
     const tronWeb = new TronWeb({
-        fullHost: process.env.NILE,
+        fullHost: process.env.FULL_HOST,
         headers: { 'TRON-PRO-API-KEY': process.env.API_KEY },
-        privateKey: privateKey
+        privateKey: "49b1b7927e607dab0fbe1f38114f90916ddaf86234ec1170c9385b7913da65b2"
     });
     return tronWeb;
 }

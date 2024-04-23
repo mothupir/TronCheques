@@ -6,7 +6,7 @@
         "outDir": "dist",
         "sourceMap": true,
         "noImplicitAny": true,
-        "types": ["tronweb"]
+        "types": ["node", "@daochild/tronweb-typescript"]
     },
     "include": ["src/**/*"]
 }
