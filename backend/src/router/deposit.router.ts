@@ -10,6 +10,5 @@ export default (router: express.Router) => {
     
     router.post('/fees', setFees);
     router.post('/deposit', deposit);
-    
     router.post('/withdraw', withdraw);
 }

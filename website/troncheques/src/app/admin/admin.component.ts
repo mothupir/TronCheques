@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { DepositService } from '../service/deposit/deposit.service';
 import { Fee, Deposit, Response, Statistic } from '../model/deposit.model';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { SpinnerService } from '../service/spinner/spinner.service';
+import { HttpClient } from '@angular/common/http';
 
 interface SearchCriterion {
   code: string,
@@ -14,7 +15,7 @@ interface SearchCriterion {
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   fee: Fee = new Fee();
   fees: Fee[] = [];
 
@@ -35,44 +36,65 @@ export class AdminComponent {
 
   addEditVisible = false;
   viewVisible = false;
+  
+  baseUrl: string = 'http://localhost:3000/api/';
+  client: HttpClient = inject(HttpClient);
 
   constructor(
     private depositService: DepositService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private spnner: SpinnerService
+    private spinner: SpinnerService
     ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     let deposit = new Deposit();
     deposit.active = true;
     this.response.deposits.push(new Deposit(), deposit, new Deposit());
-    await this.getTransactionalFees();
   }
 
   // Statistics
   async getStatistics() {
-    await this.depositService.getStatistics();
+    this.spinner.show();
+    this.client.get<Statistic>(this.baseUrl + 'statistic').subscribe(
+      data => {
+        this.statistics = data;
+        this.spinner.hide();
+      },
+      error => {
+        this.messageService.add({ severity: 'warn', summary: 'Error getting statistics.', detail: `\n ${error.message}` });
+        this.spinner.hide();
+      }
+    );
   }
 
   // Fees
   async getTransactionalFees() {
-    await this.depositService.getFees().then(data => {
-      this.fees = data;
-    }).catch((e) => {
-      this.messageService.add({ severity: 'warn', summary: 'Failed to get fees.', detail: `\n ${e.message}` });
-    });
+    this.spinner.show();
+    this.client.get<Fee[]>(this.baseUrl + 'fees/all').subscribe(
+      data => {
+        this.fees = data;
+        this.spinner.hide();
+      },
+      error => {
+        this.messageService.add({ severity: 'warn', summary: 'Error getting fees.', detail: `\n ${error.message}` });
+        this.spinner.hide();
+      }
+    );
   }
 
   async updateFees() {
-    this.spnner.show();
-    await this.depositService.updateFees(this.fees).then(() => {
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fees updated successfully.' });
-      this.spnner.hide();
-    }).catch((e) => {
-      this.messageService.add({ severity: 'warn', summary: 'Failed to update fees.', detail: `\n ${e.message}` });
-      this.spnner.hide();
-    });
+    this.spinner.show();
+    this.client.post(this.baseUrl + 'fees', this.fees).subscribe(
+      data => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fees updated successfully.' });
+        this.spinner.hide();
+      },
+      error => {
+        this.messageService.add({ severity: 'warn', summary: 'Failed to update fees.', detail: `\n ${error.message}` });
+        this.spinner.hide();
+      }
+    );
   }
 
   showAddEditFeeDialog(id: number) {

@@ -3,6 +3,7 @@ import { abi } from './abi';
 import { environment } from '../../../environments/environment';
 import { Fee, Statistic } from '../../model/deposit.model';
 import { WalletService } from '../wallet/wallet.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,12 @@ export class DepositService {
 
   contract: any;
   tronWeb: any;
+  baseUrl: string = 'http://localhost:3000/api/';
 
-  constructor(private wallet: WalletService) {}
+  constructor(
+    private wallet: WalletService,
+    private client: HttpClient
+  ) {}
 
   async connect() {
     this.tronWeb = window.tronWeb;
@@ -20,7 +25,15 @@ export class DepositService {
   }
 
   async getOwner() {
-    return await this.contract.getOwner().call();
+    let statistic = new Statistic();
+    try {
+      const data = this.client.get(this.baseUrl + 'statistic').subscribe((data: any) => {
+
+      })
+    } catch (error) {
+      return 
+    }
+    return statistic;
   }
 
   async getStatistics() {

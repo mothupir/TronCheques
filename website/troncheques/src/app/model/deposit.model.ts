@@ -51,6 +51,20 @@ class Statistic {
     totalFees: number = 0;
     activeValue: number = 0;
     contractValue: number = 0;
+
+    constructor(statistic?: any) {
+        if (statistic) {
+            this.numberOfDeposits = statistic.numberOfDeposits ? statistic.numberOfDeposits : 0;
+            this.numberOfWithdrawals = statistic.numberOfWithdrawals ? statistic.numberOfWithdrawals : 0;
+            this.numberOfReversals = statistic.numberOfReversals ? statistic.numberOfReversals : 0;
+            this.totalDeposits = statistic.totalDeposits ? statistic.totalDeposits : 0;
+            this.totalWithdrawals = statistic.totalWithdrawals ? statistic.totalWithdrawals : 0;
+            this.totalReversals = statistic.totalReversals ? statistic.totalReversals : 0;
+            this.totalFees = statistic.totalFees ? statistic.totalFees : 0;
+            this.activeValue = statistic.activeValue ? statistic.activeValue : 0;
+            this.contractValue = statistic.contractValue ? statistic.contractValue : 0;
+        }
+    }
 }
 
 class Response {

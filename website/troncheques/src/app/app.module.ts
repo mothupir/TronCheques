@@ -32,6 +32,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     ToastModule,
     ProgressSpinnerModule
   ],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService, provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

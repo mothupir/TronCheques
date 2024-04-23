@@ -20,6 +20,7 @@ export const setFees = async (fees: Fee[]) => {
         shouldPollResponse:true
       });
     } catch (error) {
+      console.log(error);
       throw new Error(error);
     }
 }
@@ -89,7 +90,7 @@ export const getStatistics = async (): Promise<Statistic> => {
     stats.totalFees = parseInt(tronWeb.fromSun(tronWeb.BigNumber(data.totalFees._hex).toNumber()));
     stats.activeValue = parseInt(tronWeb.fromSun(tronWeb.BigNumber(data.activeValue._hex).toNumber()));
 
-    const balance = await contract.balanceOf().call(process.env.DEPOSIT_ADDRESS);
+    const balance = await tronWeb.trx.getBalance(process.env.DEPOSIT_ADDRESS);
     stats.contractValue = parseInt(tronWeb.fromSun(tronWeb.BigNumber(balance).toNumber()));
 
     return stats;
