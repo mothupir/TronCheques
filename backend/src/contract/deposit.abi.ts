@@ -10,9 +10,9 @@ export const deposit_abi: any = [
 			{
 				"components": [
 					{
-						"internalType": "uint256",
-						"name": "index",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "uuid",
+						"type": "string"
 					},
 					{
 						"internalType": "string",
@@ -115,6 +115,11 @@ export const deposit_abi: any = [
 		"inputs": [
 			{
 				"internalType": "string",
+				"name": "uuid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
 				"name": "hash",
 				"type": "string"
 			},
@@ -142,9 +147,9 @@ export const deposit_abi: any = [
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "uuid",
+				"type": "string"
 			}
 		],
 		"name": "getDeposit",
@@ -152,9 +157,9 @@ export const deposit_abi: any = [
 			{
 				"components": [
 					{
-						"internalType": "uint256",
-						"name": "index",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "uuid",
+						"type": "string"
 					},
 					{
 						"internalType": "string",
@@ -264,9 +269,9 @@ export const deposit_abi: any = [
 					{
 						"components": [
 							{
-								"internalType": "uint256",
-								"name": "index",
-								"type": "uint256"
+								"internalType": "string",
+								"name": "uuid",
+								"type": "string"
 							},
 							{
 								"internalType": "string",
@@ -367,9 +372,9 @@ export const deposit_abi: any = [
 					{
 						"components": [
 							{
-								"internalType": "uint256",
-								"name": "index",
-								"type": "uint256"
+								"internalType": "string",
+								"name": "uuid",
+								"type": "string"
 							},
 							{
 								"internalType": "string",
@@ -557,9 +562,9 @@ export const deposit_abi: any = [
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "uuid",
+				"type": "string"
 			}
 		],
 		"name": "reverse",
@@ -603,9 +608,9 @@ export const deposit_abi: any = [
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "uuid",
+				"type": "string"
 			},
 			{
 				"internalType": "address",

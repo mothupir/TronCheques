@@ -1,4 +1,4 @@
-export const abi = [
+export const abi: any = [
 	{
 		"inputs": [],
 		"stateMutability": "payable",
@@ -8,90 +8,11 @@ export const abi = [
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "Received",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "cashout",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			}
-		],
-		"name": "connect",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "hash",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "ref",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "timestamp",
-				"type": "uint256"
-			}
-		],
-		"name": "deposit",
-		"outputs": [
-			{
 				"components": [
 					{
-						"internalType": "uint256",
-						"name": "index",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "uuid",
+						"type": "string"
 					},
 					{
 						"internalType": "string",
@@ -149,20 +70,86 @@ export const abi = [
 						"type": "bool"
 					}
 				],
+				"indexed": false,
 				"internalType": "struct DepositContract.Deposit",
 				"name": "",
 				"type": "tuple"
 			}
 		],
+		"name": "DepositEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "Received",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "cashout",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "uuid",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "hash",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "ref",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"name": "deposit",
+		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "uuid",
+				"type": "string"
 			}
 		],
 		"name": "getDeposit",
@@ -170,9 +157,9 @@ export const abi = [
 			{
 				"components": [
 					{
-						"internalType": "uint256",
-						"name": "index",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "uuid",
+						"type": "string"
 					},
 					{
 						"internalType": "string",
@@ -282,9 +269,9 @@ export const abi = [
 					{
 						"components": [
 							{
-								"internalType": "uint256",
-								"name": "index",
-								"type": "uint256"
+								"internalType": "string",
+								"name": "uuid",
+								"type": "string"
 							},
 							{
 								"internalType": "string",
@@ -385,9 +372,9 @@ export const abi = [
 					{
 						"components": [
 							{
-								"internalType": "uint256",
-								"name": "index",
-								"type": "uint256"
+								"internalType": "string",
+								"name": "uuid",
+								"type": "string"
 							},
 							{
 								"internalType": "string",
@@ -562,11 +549,6 @@ export const abi = [
 						"internalType": "uint256",
 						"name": "activeValue",
 						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "contractValue",
-						"type": "uint256"
 					}
 				],
 				"internalType": "struct DepositContract.Statistic",
@@ -574,25 +556,19 @@ export const abi = [
 				"type": "tuple"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "uuid",
+				"type": "string"
 			}
 		],
 		"name": "reverse",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -625,22 +601,16 @@ export const abi = [
 			}
 		],
 		"name": "setFees",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "uuid",
+				"type": "string"
 			},
 			{
 				"internalType": "address",
@@ -649,13 +619,7 @@ export const abi = [
 			}
 		],
 		"name": "withdraw",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},

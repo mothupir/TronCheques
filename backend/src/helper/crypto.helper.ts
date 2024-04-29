@@ -1,19 +1,17 @@
 import crypto from 'crypto';
 
-const algo = process.env.ALGORITHM!;
-const salt = process.env.SALT!;
-const key = process.env.ENCRYPTION_KEY!;
-
 export const encrypt = (text: string): string => {
-    const cipher = crypto.createCipheriv(algo, key, salt);
-    let encrypted = cipher.update(text, 'utf-8', 'hex');
-    encrypted += cipher.final('hex');
-    return encrypted;
+    const iv = crypto.randomBytes(parseInt(process.env.IVLG));
+    const cipher = crypto.createCipheriv(process.env.ALGO, process.env.ENC, iv);
+    const encoding: any = process.env.ENCO;
+    return Buffer.concat([cipher.update(text,), cipher.final(), iv]).toString(encoding);
 }
 
 export const decrypt = (text: string): string => {
-    const decipher = crypto.createDecipheriv(algo, key, salt);
-    let decrypted = decipher.update(text, 'hex', 'utf-8');
-    decrypted += decipher.final('utf-8');
-    return decrypted;
+    const encoding: any = process.env.ENCO;
+    const data = new Buffer(text, encoding);
+    const iv = data.slice(-parseInt(process.env.IVLG));
+    const encrypted = data.slice(0, data.length - parseInt(process.env.IVLG));
+    const decipher = crypto.createDecipheriv(process.env.ALGO, process.env.ENC, iv);
+    return Buffer.concat([decipher.update(encrypted), decipher.final()]).toString();
 }

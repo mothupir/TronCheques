@@ -19,6 +19,7 @@ class Deposit {
 
     setDate(date: Date) {
         this.timestamp = date.valueOf();
+        return this.timestamp;
     }
 }
 
@@ -58,6 +59,13 @@ class Response {
     deposits: Deposit[] = [];
 }
 
+class Cheque {
+    id: number = 0;
+    amount: number;
+    password: string;
+    ref: string;
+}
+
 class Config {
     apiKey: string;
     fullHost: string;
@@ -65,5 +73,5 @@ class Config {
 }
 
 export {
-    Deposit, Fee, Statistic, Response, Config
+    Deposit, Fee, Statistic, Response, Config, Cheque
 }

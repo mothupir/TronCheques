@@ -37,15 +37,6 @@ export class AppComponent {
 
   async ngAfterViewInit() {
     this.onNavClick(this.getUrl());
-
-    this.spinner.show();
-
-    
-    await this.depositService.connect();
-    //await this.withdrawService.connect();
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 100);
   }
 
   getUrl(): string {

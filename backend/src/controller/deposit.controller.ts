@@ -7,7 +7,8 @@ import {
     getReversalFee as getReversalFeeService,
     getStatistics as getStatisticsService,
     deposit as depositService,
-    withdraw as withdrawService
+    withdraw as withdrawService,
+    depositWithPrivateKey as depositWithPrivateKeyService
 } from '../service/deposit.service';
 
 export const setFees = async (req: express.Request, res: express.Response) => {
@@ -57,12 +58,21 @@ export const getStatistics = async (req: express.Request, res: express.Response)
 
 export const deposit = async (req: express.Request, res: express.Response) => {
     try {
-        const output = depositService(req.body.code);
+        const output = depositService(req.body.password);
         return res.status(200).json(output).end();
     } catch (error) {
         return res.status(500).json(error.message).end();
     }
 };
+
+export const depositWithPrivateKey = async (req: express.Request, res: express.Response) => {
+    try {
+        const output = await depositWithPrivateKeyService(req.body.amount, req.body.ref, req.body.key);
+        return res.status(200).json(output).end();
+    } catch (error) {
+        return res.status(500).json(error.message).end();
+    }
+}
 
 export const withdraw = async (req: express.Request, res: express.Response) => {
     try {

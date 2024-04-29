@@ -1,9 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { DepositService } from '../service/deposit/deposit.service';
 import { Fee, Deposit, Response, Statistic } from '../model/deposit.model';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { SpinnerService } from '../service/spinner/spinner.service';
 import { HttpClient } from '@angular/common/http';
+import { environment as env } from '../../environments/environment';
 
 interface SearchCriterion {
   code: string,
@@ -15,7 +16,7 @@ interface SearchCriterion {
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent {
   fee: Fee = new Fee();
   fees: Fee[] = [];
 
@@ -36,15 +37,13 @@ export class AdminComponent implements OnInit {
 
   addEditVisible = false;
   viewVisible = false;
-  
-  baseUrl: string = 'http://localhost:3000/api/';
-  client: HttpClient = inject(HttpClient);
 
   constructor(
     private depositService: DepositService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private client: HttpClient
     ) {}
 
   ngOnInit() {
@@ -56,7 +55,7 @@ export class AdminComponent implements OnInit {
   // Statistics
   async getStatistics() {
     this.spinner.show();
-    this.client.get<Statistic>(this.baseUrl + 'statistic').subscribe(
+    this.client.get<Statistic>(env.BASE_URL + 'statistic').subscribe(
       data => {
         this.statistics = data;
         this.spinner.hide();
@@ -71,7 +70,7 @@ export class AdminComponent implements OnInit {
   // Fees
   async getTransactionalFees() {
     this.spinner.show();
-    this.client.get<Fee[]>(this.baseUrl + 'fees/all').subscribe(
+    this.client.get<Fee[]>(env.BASE_URL + 'fees/all').subscribe(
       data => {
         this.fees = data;
         this.spinner.hide();
@@ -85,7 +84,7 @@ export class AdminComponent implements OnInit {
 
   async updateFees() {
     this.spinner.show();
-    this.client.post(this.baseUrl + 'fees', this.fees).subscribe(
+    this.client.post(env.BASE_URL + 'fees', this.fees).subscribe(
       data => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fees updated successfully.' });
         this.spinner.hide();

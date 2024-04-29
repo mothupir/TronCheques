@@ -4,6 +4,9 @@ import { DepositService } from '../service/deposit/deposit.service';
 import { Deposit, Fee } from '../model/deposit.model';
 import { SpinnerService } from '../service/spinner/spinner.service';
 import { MessageService } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
+import { environment as env } from '../../environments/environment';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-deposit',
@@ -33,32 +36,56 @@ export class DepositComponent {
     private walletService: WalletService, 
     private depositService: DepositService,
     private messageService: MessageService,
-    private spinner: SpinnerService) {
-    
-  }
+    private spinner: SpinnerService,
+    private client: HttpClient
+  ) {}
 
   async ngOnInit() {
-    await this.getTransactionalFees();
+    //await this.getTransactionalFees();
   }
 
-  async confirm() {
+  async getTransactionalFees() {
+    this.spinner.show();
+    this.client.get<Fee[]>(env.BASE_URL + 'fees/all').subscribe(
+      data => {
+        this.fees = data;
+        if (this.fees.length > 0) {
+          this.min = this.fees[0].min;
+          this.max = this.fees[this.fees.length - 1].deposit
+        }
+        this.spinner.hide();
+      },
+      error => {
+        this.messageService.add({ severity: 'warn', summary: 'Fees Error.', detail: `\n ${error.message}` });
+        this.spinner.hide();
+      }
+    );
+  }
+
+  confirm() {
+    if (this.amount < this.min) {
+      this.messageService.add({ severity: 'warn', summary: 'Amount Error.', detail: `\n Minimum amount you can deposit is, ${this.min} trx` });
+      return;
+    }
+    if (!this.description || this.description.length < 3) {
+      this.messageService.add({ severity: 'warn', summary: 'Reference Error.', detail: `\n Reference should be at least 3 characters.` });
+      return;
+    }
     this.showConfirmDialog = true;
   }
 
-  async depositWithWallet() {
-    this.showConfirmDialog = false;
-    this.spinner.show();
-    setTimeout(() => { this.spinner.hide(); }, 5000);
-  }
-
-  async depositWithPrivateKey() {
-    this.showConfirmDialog = false;
-    this.spinner.show();
-    setTimeout(() => { this.spinner.hide(); }, 5000);
-  }
-
-  async useConnectedWallet() {
-    this.walletAddress = this.walletService.tronLink.address;
+  getFee(): number {
+    let fee: Fee = new Fee();
+    if (this.fees.length > 0) {
+      this.fees.forEach(f => {
+        if (f.min <= this.amount && f.max <= this.amount) {
+          fee = new Fee(f);
+        }
+      });
+    } else {
+      fee = new Fee();
+    }
+    return fee.deposit;
   }
 
   async clear() {
@@ -68,11 +95,16 @@ export class DepositComponent {
     this.description = "";
   }
 
-  async getTransactionalFees() {
-    await this.depositService.getFees().then(data => {
-      this.fees = data;
-    }).catch((e) => {
-      this.messageService.add({ severity: 'warn', summary: 'Failed to get fees.', detail: `\n ${e.message}` });
-    });
+  async depositWithWallet() {
+    this.showConfirmDialog = false;
+    this.spinner.show();
+    setTimeout(() => { this.spinner.hide(); }, 5000);
+  }
+
+  async depositWithPrivateKey() {
+    this.spinner.show();
+    this.showConfirmDialog = false;
+    await this.depositService.depositWithPrivateKey(this.privateKey, this.amount, this.getFee(), this.description);
+
   }
 }

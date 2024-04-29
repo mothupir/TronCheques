@@ -1,7 +1,7 @@
 import { deposit_abi } from "../contract/deposit.abi";
 import { encrypt, decrypt } from "../helper/crypto.helper"
-import { connectToChain, connectToContract } from "../helper/tronweb.helper"
-import { Fee, Statistic, Deposit } from "../model"
+import { connectToChain, connectToContract, generateCode } from "../helper/tronweb.helper"
+import { Fee, Statistic, Deposit, Cheque } from "../model"
 
 export const setFees = async (fees: Fee[]) => {
     try {
@@ -30,7 +30,7 @@ export const getFees = async (): Promise<Fee[]> => {
       const tronWeb = connectToChain();
       const contract = await connectToContract(tronWeb, deposit_abi, process.env.DEPOSIT_ADDRESS);
       const data = await contract.getFees().call();
-
+      
       let fees: Fee[] = [];
   
       data.forEach((d: any) => {
@@ -101,6 +101,42 @@ export const getStatistics = async (): Promise<Statistic> => {
 
 export const deposit = (password: string): string => {
     return encrypt(password);
+}
+
+export const depositWithPrivateKey = async (amount: number, ref: string, privateKey: string): Promise<Cheque> => {
+  const password = generateCode();
+  const hash = encrypt(password);
+  let fee: number = 0;
+
+  console.log("Return1:");
+  try {
+    const tronWeb = connectToChain(privateKey);
+    const contract = await connectToContract(tronWeb, deposit_abi, process.env.DEPOSIT_ADDRESS);
+    
+    await getDepositFee(amount).then(data => {
+      fee = data;
+    }).catch((error) => {
+      throw new Error(error.message);
+    });
+
+    const timestamp = new Deposit().setDate(new Date());
+
+    const tx = await contract.deposit(hash, tronWeb.toSun(amount), ref, timestamp).send({
+      feeLimit:15_000_000_000,
+      callValue:tronWeb.toSun(amount + fee),
+      shouldPollResponse:true
+    })
+    console.log("Return:", tx);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+
+  let cheque: Cheque = new Cheque();
+  cheque.amount = amount;
+  cheque.password = password;
+  cheque.ref = ref;
+
+  return cheque;
 }
 
 export const withdraw = async (index: number, address: string, password: string) => {

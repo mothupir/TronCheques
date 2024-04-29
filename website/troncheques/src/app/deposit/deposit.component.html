@@ -56,9 +56,8 @@
     <div>
         <div class="separator"></div>
         <div class="title">
-            <div></div>
             <div>Transactional Fees</div>
-            <div></div>
+            <button pButton (click)="getTransactionalFees()" label="Refresh" icon="pi pi-refresh" class="p-button-sm p-button-raised p-button-info p-button-text"></button>
         </div>
     </div>
 
@@ -87,9 +86,9 @@
         </div>
     </p-scrollPanel>
 
-    <div class="minmax">
-        <div>Maximum Deposit - {{min}}</div>
-        <div>Minimum Deposit - {{max}}</div>
+    <div class="minmax text-200">
+        <div>Mininum Deposit Allowed - {{min}} trx</div>
+        <div>Maximum Deposit Fee - {{max}} trx</div>
     </div>
 </div>
 
@@ -117,17 +116,51 @@
 </p-dialog>
 
 <p-dialog header="Sign Transaction" [draggable]="false" [modal]="true" [(visible)]="showConfirmDialog" [style]="{width: '500px'}">
-    <div class="detail">
+    <div class="detail mb-3">
         <label class="label">Sign With Wallet</label>
         <div class="row">
             <p-dropdown [options]="walletList" [(ngModel)]="wallet" optionLabel="name" placeholder="Select Wallet" autoWidth="false" [style]="{width: '380px'}"></p-dropdown>
-            <button pButton (click)="depositWithWallet()" label="Sign" icon="pi pi-wallet" iconPos="right" class="p-button-raised p-button-outlined"></button>
+            <button pButton (click)="depositWithWallet()" label="Sign" icon="pi pi-wallet" iconPos="right" class="p-button-help p-button-sm p-button-outlined"></button>
         </div>
         <div class="or">OR</div>
         <label class="label">Sign With Private Key</label>
         <div class="row">
             <input pInputText placeholder="Private Key" style="width: 380px;">
-            <button pButton (click)="depositWithPrivateKey()" label="Sign" icon="pi pi-user-edit" iconPos="right" class="p-button-raised p-button-outlined"></button>
+            <button pButton (click)="depositWithPrivateKey()" label="Sign" icon="pi pi-user-edit" iconPos="right" class="p-button-help p-button-sm p-button-outlined"></button>
+        </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="card card-warning mt-2 font-medium text-primary">
+        <div class="detail">
+            <div class="name">Total Amount</div>
+            <div class="separator"></div>
+            <div class="value">{{amount + getFee()}} TRX</div>
+        </div>
+    </div>
+
+    <div class="card card-disabled mt-2">
+        <div class="detail">
+            <div class="name">Depost Amount</div>
+            <div class="separator"></div>
+            <div class="value">{{amount}} TRX</div>
+        </div>
+    </div>
+
+    <div class="card card-disabled mt-2">
+        <div class="detail">
+            <div class="name">Fee Charged</div>
+            <div class="separator"></div>
+            <div class="value">{{getFee()}} TRX</div>
+        </div>
+    </div>
+
+    <div class="card card-disabled mt-2">
+        <div class="detail">
+            <div class="name">Reference</div>
+            <div class="separator"></div>
+            <div class="value">{{description || "None"}}</div>
         </div>
     </div>
 </p-dialog>
