@@ -22,7 +22,7 @@
                     <div class="detail">
                         <div class="name">Deposit ID:</div>
                         <div class="separator"></div>
-                        <div class="value">{{p.index}}</div>
+                        <div class="value">{{p.uuid}}</div>
                     </div>
                     <div class="separator"></div>
                     <div class="detail">
@@ -31,8 +31,8 @@
                         <div class="value">{{p.ref}}</div>
                     </div>
                     <div class="actions">
-                        <button pButton (click)="showReverseConfirmationPopup(p.index, $event)" icon="pi pi-minus-circle" [disabled]="p.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded"></button>
-                        <button pButton (click)="showViewDialog(p.index)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded"></button>
+                        <button pButton (click)="showReverseConfirmationPopup(p.uuid, $event)" icon="pi pi-minus-circle" [disabled]="p.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded"></button>
+                        <button pButton (click)="showViewDialog(p.uuid)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded"></button>
                     </div>
                 </div>
             </p-scrollPanel>
@@ -199,7 +199,7 @@
             <div class="detail">
                 <div class="name">Deposit ID</div>
                 <div class="separator"></div>
-                <div class="value">{{deposit.index}}</div>
+                <div class="value">{{deposit.uuid}}</div>
             </div>
         </div>
         <div class="card card-primary">

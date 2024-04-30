@@ -103,43 +103,27 @@ export const deposit = (password: string): string => {
     return encrypt(password);
 }
 
-export const depositWithPrivateKey = async (amount: number, ref: string, privateKey: string): Promise<Cheque> => {
-  const password = generateCode();
-  const hash = encrypt(password);
-  let fee: number = 0;
-
-  console.log("Return1:");
+export const depositWithPrivateKey = async (code: string, password: string, amount: number, ref: string, key: string): Promise<string> => {
   try {
-    const tronWeb = connectToChain(privateKey);
+    const tronWeb = connectToChain(key);
     const contract = await connectToContract(tronWeb, deposit_abi, process.env.DEPOSIT_ADDRESS);
     
-    await getDepositFee(amount).then(data => {
-      fee = data;
-    }).catch((error) => {
-      throw new Error(error.message);
-    });
-
     const timestamp = new Deposit().setDate(new Date());
+    const fee = await getDepositFee(amount);
 
-    const tx = await contract.deposit(hash, tronWeb.toSun(amount), ref, timestamp).send({
+    const tx = await contract.deposit(code, encrypt(password), tronWeb.toSun(amount), ref, timestamp).send({
       feeLimit:15_000_000_000,
       callValue:tronWeb.toSun(amount + fee),
       shouldPollResponse:true
-    })
-    console.log("Return:", tx);
+    });
+    console.log("Transaction Id:", tx);
+    return tx;
   } catch (error) {
     throw new Error(error.message);
   }
-
-  let cheque: Cheque = new Cheque();
-  cheque.amount = amount;
-  cheque.password = password;
-  cheque.ref = ref;
-
-  return cheque;
 }
 
-export const withdraw = async (index: number, address: string, password: string) => {
+export const withdraw = async (uuid: string, password: string, address: string) => {
   try {
       const tronWeb = connectToChain();
 
@@ -149,7 +133,7 @@ export const withdraw = async (index: number, address: string, password: string)
 
       const contract = await connectToContract(tronWeb, deposit_abi, process.env.DEPOSIT_ADDRESS);
 
-      let data = await contract.getDeposit(index).call();
+      let data = await contract.getDeposit(uuid).call();
 
       if (data.withdrawn) {
           throw new Error("Deposit was withdrawn.");
@@ -163,33 +147,15 @@ export const withdraw = async (index: number, address: string, password: string)
           throw new Error("Deposit is inactive.")
       }
 
-      if (decrypt(data.hash) !== password) {
+      if (decrypt(data.hash) != password) {
           throw new Error("The withdrawal code provided is invalid.");
       }
 
-      const trxHash = await contract.withdraw(index, address).send({
+      const trxHash = await contract.withdraw(uuid, address).send({
           feeLimit:15_000_000_000,
           callValue:0,
           shouldPollResponse:true
       });
-
-      data = contract.getDeposit(index).call();
-
-      let deposit = new Deposit();
-      deposit.index = tronWeb.BigNumber(data.index._hex).toNumber();
-      deposit.hash = data.hash;
-      deposit.amount = parseInt(tronWeb.fromSun(tronWeb.BigNumber(data.amount._hex).toNumber()));
-      deposit.fee = parseInt(tronWeb.fromSun(tronWeb.BigNumber(data.fee._hex).toNumber()));
-      deposit.ref = data.ref;
-      deposit.owner = data.owner;
-      deposit.withdrawn = data.withdrawn;
-      deposit.reversed = data.reversed;
-      deposit.blocked = data.blocked;
-      deposit.withdrawer = data.withdrawer;
-      deposit.timestamp = data.timestamp;
-      deposit.active = data.active;
-
-      return deposit;
   } catch (error) {
       throw new Error(error);
   }

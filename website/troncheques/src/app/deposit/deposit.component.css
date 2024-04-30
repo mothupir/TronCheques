@@ -94,14 +94,6 @@
     flex-direction: column;
 }
 
-.or {
-    text-align: center;
-    width: 100%;
-    font-size: small;
-    font-style: italic;
-    margin: 10px 0;
-}
-
 .row {
     display: flex;
     justify-content: space-between;
@@ -109,8 +101,19 @@
     margin-top: 3px;
 }
 
-.w-100 {
-    width: 320px;
+.value span {
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+.value span:hover {
+    box-shadow: 1px 1px 2px 0 gray;
+}
+
+.value span:active {
+    color: gray;
+    box-shadow: 1px 1px 2px 1px gray;
 }
 
 .minmax {

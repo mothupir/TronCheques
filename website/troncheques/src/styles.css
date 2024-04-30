@@ -103,3 +103,14 @@
     display: flex;
     justify-content: end;
 }
+
+.p-dropdown-label {
+    font-size: 0.875rem;
+    padding: 0.4375rem 0.65625rem;
+}
+
+.p-dropdown-item {
+    margin: 0.4375rem;
+    border-radius: 5px;
+    font-size: small;
+}

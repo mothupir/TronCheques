@@ -20,7 +20,7 @@ export class DepositComponent {
   withdrawalCode = "";
   description = "";
   
-  showDialog = false;
+  showWithdrawDialog = false;
   showConfirmDialog = false;
 
   deposit: Deposit = new Deposit();
@@ -98,13 +98,45 @@ export class DepositComponent {
   async depositWithWallet() {
     this.showConfirmDialog = false;
     this.spinner.show();
-    setTimeout(() => { this.spinner.hide(); }, 5000);
+    setTimeout(() => { 
+      this.spinner.hide();
+      this.showWithdrawDialog = true;
+    }, 2000);
   }
 
   async depositWithPrivateKey() {
     this.spinner.show();
     this.showConfirmDialog = false;
-    await this.depositService.depositWithPrivateKey(this.privateKey, this.amount, this.getFee(), this.description);
+    const password = this.depositService.generate();
+    const code = uuid().toUpperCase();
 
+    this.client.post(env.BASE_URL + 'deposit/key', {
+      code: code,
+      password: password,
+      amount: this.amount,
+      ref: this.description,
+      key: this.privateKey
+    }).subscribe(
+      data => {
+        this.messageService.add({ severity: 'success', summary: 'Deposit Successful', detail: 'Amount was successfully deposited, wait a few minutes for it to reflect on your history.' });
+        this.deposit.amount = this.amount;
+        this.deposit.hash = password;
+        this.deposit.uuid = code;
+        this.deposit.fee = this.getFee();
+        this.spinner.hide();
+
+        this.showWithdrawDialog = true;
+      },
+      error => {
+        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}` });
+        this.spinner.hide();
+      }
+    );
+  }
+
+  copy(id: string) {
+    this.messageService.add({ severity: 'info', detail: 'Copied', life: 2500 });
+    let text = document.getElementById(id)!.innerText;
+    navigator.clipboard.writeText(text);
   }
 }

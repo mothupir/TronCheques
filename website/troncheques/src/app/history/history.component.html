@@ -9,7 +9,7 @@
             <div class="detail">
                 <div class="name">Deposit ID:</div>
                 <div class="separator"></div>
-                <div class="value">{{dep.index}}</div>
+                <div class="value">{{dep.uuid}}</div>
             </div>
             <div class="detail">
                 <div class="name">Reference:</div>
@@ -17,8 +17,8 @@
                 <div class="value">{{dep.ref ? dep.ref : "N/A"}}</div>
             </div>
             <div class="actions">
-                <button pButton (click)="showReverseConfirmationPopup(dep.index, $event)" icon="pi pi-minus-circle"[disabled]="dep.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded" pTooltip="Reverse"></button>
-                <button pButton (click)="showViewDialog(dep.index)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded" pTooltip="View"></button>
+                <button pButton (click)="showReverseConfirmationPopup(dep.uuid, $event)" icon="pi pi-minus-circle"[disabled]="dep.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded" pTooltip="Reverse"></button>
+                <button pButton (click)="showViewDialog(dep.uuid)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded" pTooltip="View"></button>
             </div>
         </div>
     </p-scrollPanel>
@@ -40,7 +40,7 @@
         </div>
         <div class="detail">
             <div class="detail-name">Deposit ID</div>
-            <div class="detail-value">{{deposit.index}}</div>
+            <div class="detail-value">{{deposit.uuid}}</div>
         </div>
         <div class="detail">
             <div class="detail-name">Owner Address</div>

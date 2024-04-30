@@ -47,7 +47,7 @@ export class DepositService {
 
   }
   
-  private generate() {
+  generate() {
     const length = Math.floor(Math.random() * 9) + 8;
     let str = '';
     Array.from({length}).some(() => {

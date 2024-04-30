@@ -67,7 +67,7 @@ export const deposit = async (req: express.Request, res: express.Response) => {
 
 export const depositWithPrivateKey = async (req: express.Request, res: express.Response) => {
     try {
-        const output = await depositWithPrivateKeyService(req.body.amount, req.body.ref, req.body.key);
+        const output = await depositWithPrivateKeyService(req.body.code, req.body.password, req.body.amount, req.body.ref, req.body.key);
         return res.status(200).json(output).end();
     } catch (error) {
         return res.status(500).json(error.message).end();
@@ -76,9 +76,9 @@ export const depositWithPrivateKey = async (req: express.Request, res: express.R
 
 export const withdraw = async (req: express.Request, res: express.Response) => {
     try {
-        const output = await withdrawService(req.body.index, req.body.address, req.body.password);
+        const output = await withdrawService(req.body.uuid, req.body.password, req.body.address);
         return res.status(200).json(output).end();
     } catch (error) {
-        res.status(400).json(error.message).end();
+        res.status(500).json(error.message).end();
     }
 };

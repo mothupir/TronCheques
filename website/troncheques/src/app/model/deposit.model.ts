@@ -1,7 +1,6 @@
 class Deposit {
-    index: number = 0;
-    hash: string = "";
     uuid: string = "";
+    hash: string = "";
     amount: number = 0;
     fee: number = 0;
     ref: string = "";
