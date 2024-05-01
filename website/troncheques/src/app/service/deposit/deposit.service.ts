@@ -82,9 +82,7 @@ export class DepositService {
   }
 
   async getDeposits(index: number, count: number) {
-    if (!this.contract) {
-      await this.connectToContract();
-    }
+    if (!this.contract) await this.connectToContract();
 
     let response = new Response();
 

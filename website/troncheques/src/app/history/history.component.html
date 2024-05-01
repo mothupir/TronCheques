@@ -113,9 +113,6 @@
     </div>
 
     <div>
-        <button pButton *ngIf="deposit.active" label="Reverse" class="p-button-sm p-button-warning"></button>
+        <button pButton (click)="showReverseConfirmationPopup(deposit.uuid, $event)" *ngIf="deposit.active" label="Reverse" class="p-button-sm p-button-warning p-button-raised p-button-text"></button>
     </div>
 </p-dialog>
-
-<p-confirmDialog acceptButtonStyleClass="p-button-success p-button-raised p-button-sm" rejectButtonStyleClass="p-button-warning p-button-raised p-button-sm p-button-text w-100" acceptIcon="none" acceptLabel="Confirm" rejectIcon="none" rejectLabel="Reject"></p-confirmDialog>
-<p-toast [life]="10000"></p-toast>

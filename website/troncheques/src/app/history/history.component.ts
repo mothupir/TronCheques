@@ -35,11 +35,9 @@ export class HistoryComponent {
   async getDeposits() {
     this.spinner.show();
     await this.depositService.getDeposits(0, 10).then(data => {
-      console.log("Error:", data);
       this.response = data;
       this.spinner.hide();
     }).catch(error => {
-      console.log("Error:", error);
       this.spinner.hide();
     })
   }
@@ -54,16 +52,22 @@ export class HistoryComponent {
       message: "Are you sure you want to reverse the payment? \nNote. There will be a reversal charge.",
       header: "Reverse Deposit",
       accept: async () => {
-        await this.reverse(uuid).then((data: boolean) => {
-          data ? this.messageService.add({ severity: 'success', summary: 'Successful', detail: "Deposit has been successfully reversed. Funds are returned to depositor's wallet" }) :
-          this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Failed to reverse funds.' });
-        });
+        this.viewVisible = false;
+        await this.reverse(uuid);
       }
     });
   }
 
-  async reverse(uuid: string): Promise<boolean> {
-    return false;
+  async reverse(uuid: string) {
+    this.spinner.show();
+    
+    await this.depositService.reverse(uuid).then(() => {
+      this.spinner.show();
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: "Deposit has been successfully reversed. Funds are returned to depositor's wallet" });
+    }).catch(error => {
+      this.spinner.show();
+      this.messageService.add({ severity: 'warn', summary: 'Reversal Error', detail: error.error });
+    });
   }
 
   showViewDialog(uuid: string) {
