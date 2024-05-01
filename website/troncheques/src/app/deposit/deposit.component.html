@@ -6,7 +6,7 @@
                     <label class="label">Amount</label>
                     <p-inputGroup>
                         <p-inputNumber id="amount" [(ngModel)]="amount" inputId="minmax" [min]="0" mode="decimal" placeholder="Amount"></p-inputNumber>
-                        <button pButton label="TRX" class="p-button-outlined p-button-secondary" disabled></button>
+                        <button pButton label="trx" class="p-button-outlined p-button-secondary" disabled></button>
                     </p-inputGroup>
                 </div>
     
@@ -26,27 +26,21 @@
             <div class="title2">Instructions</div>
             <div class="steps">
                 <div class="step">
-                    <span>Step 1 - Wallet Address</span>
+                    <span>Step 1 - Details</span>
                     <p class="m-0">
-                        Paste the wallet address you are depositing from. Or click the wallet icon to paste the wallet address you are connected to.
+                        Enter the amount and reference and then click 'Confirm'.
                     </p>
                 </div>
                 <div class="step">
-                    <span>Step 2 - Amount/Value</span>
+                    <span>Step 2 - Sign</span>
                     <p class="m-0">
-                        Enter the amount/value you want to deposit. Choose the currency you wanna deposit in, sun/trx. Take note of the minimun/maximum fees in the "Transactional Fees" section below.
+                        Select how you want to sign the transaction. If it's through wallet, make sure you have TronLink extension. If it's through private key, enter your private key.
                     </p>
                 </div>
                 <div class="step">
-                    <span>Step 3 - Reference</span>
+                    <span>Step 3 - Finish</span>
                     <p class="m-0">
-                        Type in your reference number.
-                    </p>
-                </div>
-                <div class="step">
-                    <span>Step 4 - Confirm</span>
-                    <p class="m-0">
-                        Click confirm and then go to your TronLink wallet to sign the transaction. The you'll get a popup with withdral details. Copy them and share with the person who will withdraw the amount.
+                        Wait for the transaction to complete. Then copy the Withdrawal ID and Password and share with the withdrawer. If you lose then you can always access them in your 'History'.
                     </p>
                 </div>
             </div>
@@ -61,27 +55,27 @@
         </div>
     </div>
 
-    <p-scrollPanel [style]="{ width: '100%', height: '50vh' }">
+    <p-scrollPanel [style]="{ width: '100%', height: '35vh' }">
         <div class="card card-disabled" *ngFor="let fee of fees">
             <div class="detail">
                 <div class="name">From</div>
                 <div class="separator"></div>
-                <div class="value">{{fee.min}} TRX</div>
+                <div class="value">{{fee.min}} trx</div>
             </div>
             <div class="detail">
                 <div class="name">To</div>
                 <div class="separator"></div>
-                <div class="value">{{fee.max}} TRX</div>
+                <div class="value">{{fee.max}} trx</div>
             </div>
             <div class="detail">
                 <div class="name">Deposit</div>
                 <div class="separator"></div>
-                <div class="value">{{fee.deposit}} TRX</div>
+                <div class="value">{{fee.deposit}} trx</div>
             </div>
             <div class="detail">
                 <div class="name">Reversal</div>
                 <div class="separator"></div>
-                <div class="value">{{fee.reversal}} TRX</div>
+                <div class="value">{{fee.reversal}} trx</div>
             </div>
         </div>
     </p-scrollPanel>
@@ -92,7 +86,7 @@
     </div>
 </div>
 
-<p-dialog header="Withdrawal Details" [draggable]="false" [modal]="true" [(visible)]="showWithdrawDialog" [style]="{width: '60vw'}">
+<p-dialog header="Details" [draggable]="false" [modal]="true" [(visible)]="showWithdrawDialog" [style]="{width: '70vw'}">
     <div class="card card-info">
         <div class="detail">
             <div class="name">Total</div>
@@ -117,14 +111,14 @@
             <div class="value" id="uuid">{{deposit.uuid ? deposit.uuid : "N/A"}} <span (click)="copy('uuid')"><i class="pi pi-copy"></i></span></div>
         </div>
         <div class="detail">
-            <div class="name">Withdraw Code</div>
+            <div class="name">Password</div>
             <div class="separator"></div>
             <div class="value" id="code">{{deposit.hash ? deposit.hash : "N/A"}} <span (click)="copy('code')"><i class="pi pi-copy"></i></span></div>
         </div>
     </div>
 </p-dialog>
 
-<p-dialog header="Sign Transaction" [draggable]="false" [modal]="true" [(visible)]="showConfirmDialog" [style]="{width: '500px'}">
+<p-dialog header="Confirm" [draggable]="false" [modal]="true" [(visible)]="showConfirmDialog" [style]="{width: '500px'}">
     <div class="detail mb-3">
         <label class="label">Sign With Wallet</label>
         <div class="row">
@@ -133,7 +127,7 @@
         </div>
         <label class="label mt-3">Sign With Private Key</label>
         <div class="row">
-            <input pInputText placeholder="Private Key" style="width: 380px;">
+            <input pInputText placeholder="Private Key" class="p-inputtext-sm" style="width: 380px;">
             <button pButton (click)="depositWithPrivateKey()" label="Sign" icon="pi pi-user-edit" iconPos="right" class=" p-button-text p-button-raised"></button>
         </div>
     </div>
@@ -144,15 +138,15 @@
         <div class="detail">
             <div class="name">Total Amount</div>
             <div class="separator"></div>
-            <div class="value">{{amount + getFee()}} TRX</div>
+            <div class="value">{{amount + getFee()}} trx</div>
         </div>
     </div>
 
     <div class="card card-disabled mt-2">
         <div class="detail">
-            <div class="name">Depost Amount</div>
+            <div class="name">Deposit Amount</div>
             <div class="separator"></div>
-            <div class="value">{{amount}} TRX</div>
+            <div class="value">{{amount}} trx</div>
         </div>
     </div>
 
@@ -160,7 +154,7 @@
         <div class="detail">
             <div class="name">Fee Charged</div>
             <div class="separator"></div>
-            <div class="value">{{getFee()}} TRX</div>
+            <div class="value">{{getFee()}} trx</div>
         </div>
     </div>
 

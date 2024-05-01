@@ -1,6 +1,6 @@
 <div class="main">
-  <div class="nav-wrapper">
-    <div class="logo">T.C</div>
+  <div class="nav-wrapper pb-2">
+    <img class="logo" src="../assets/logo-wb.png">
     <div class="nav">
       <div *ngFor="let item of items">
         <div class="btn-item" *ngIf="item.available" id="{{item.name}}" (click)="onNavClick(item.name)" routerLink="{{item.link}}"><i class="{{item.icon}}"></i> {{item.name}}</div>
@@ -13,19 +13,21 @@
     </div>
   </div>
 
-  <div class="header">TRON CHEQUES</div>
-
   <p-sidebar [(visible)]="visible" position="right">
-    <ng-template pTemplate="header">Header Content</ng-template>
+    <ng-template pTemplate="header">Menu</ng-template>
     <ng-template pTemplate="content">
       <div *ngFor="let item of items">
         <div class="btn-item" *ngIf="item.available" id="{{item.name}}" (click)="onNavClick(item.name)" routerLink="{{item.link}}"><i class="{{item.icon}}"></i> {{item.name}}</div>
       </div>
     </ng-template>
-    <ng-template pTemplate="footer">Footer Content</ng-template>
+    <ng-template pTemplate="footer">Tron Cheques</ng-template>
   </p-sidebar>
   
   <router-outlet />
+
+  <div class="footer">
+    {{'Tron Cheques by Joint Labs Pty Ltd. @' + getYear()}}
+  </div>
 </div>
 
 <div id="spinner" class="spin">

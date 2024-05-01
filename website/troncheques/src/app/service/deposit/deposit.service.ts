@@ -37,23 +37,18 @@ export class DepositService {
     }
   }
 
-  async depositWithWallet(uuid: string, password: string, amount: number, ref: string) {
+  async depositWithWallet(uuid: string, hash: string, amount: number, ref: string) {
     if (!this.contract) await this.connectToContract();
 
-    this.client.post(env.BASE_URL + 'deposit', { password: password}).subscribe(
-      async hash => {
-        const timestamp: number = new Deposit().setDate(new Date());
-        const fee = await this.contract.getDepositFee(this.tronWeb.toSun(amount)).call();
-        await this.contract.deposit(uuid, hash, amount, ref, timestamp).send({
-          feeLimit:15_000_000_000,
-          callValue: this.tronWeb.toSun(amount) + this.tronWeb.BigNumber(fee).toNumber(),
-          shouldPollResponse:true
-        });
-      },
-      error => {
-        throw new Error(error);
-      }
-    );
+    const timestamp: number = new Deposit().setDate(new Date());
+    const fee = await this.contract.getDepositFee(this.tronWeb.toSun(amount)).call();
+    const value = parseInt(this.tronWeb.toSun(amount)) + parseInt(this.tronWeb.BigNumber(fee._hex).toNumber());
+
+    await this.contract.deposit(uuid, hash, this.tronWeb.toSun(amount), ref, timestamp).send({
+      feeLimit:15_000_000_000,
+      callValue: value,
+      shouldPollResponse:true
+    });
   }
 
   async reverse(uuid: string) {

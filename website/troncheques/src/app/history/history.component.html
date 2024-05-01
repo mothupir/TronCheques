@@ -37,8 +37,8 @@
     <div class="bottom">
         <div></div>
         <div class="nextback">
-            <button pButton label="Prev" class="p-button-raised p-button-sm p-button-text p-button-warning" icon="pi pi-angle-left"></button>
-            <button pButton label="Next" class="p-button-raised p-button-sm p-button-text p-button-info" icon="pi pi-angle-right" iconPos="right"></button>
+            <button pButton (click)="getPrev()" [disabled]="!showBack" label="Prev" class="p-button-raised p-button-sm p-button-text p-button-warning" icon="pi pi-angle-left"></button>
+            <button pButton (click)="getDeposits()" [disabled]="!showNext" label="Next" class="p-button-raised p-button-sm p-button-text p-button-info" icon="pi pi-angle-right" iconPos="right"></button>
         </div>
     </div>
 </div>
@@ -101,7 +101,7 @@
     </div>
     <div class="card card-info">
         <div class="detail">
-            <div class="name">Withdraw Code</div>
+            <div class="name">Withdraw ID</div>
             <div class="separator"></div>
             <div class="value">{{deposit.uuid}}</div>
         </div>

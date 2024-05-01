@@ -22,18 +22,45 @@
     width: 100%;
 }
 
-.currency {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
-
-.currency label {
-    margin-right: 10px;
-}
-
 .info {
     width: 100%;
+    padding: 1.5rem 1rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+}
+
+.title2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.steps, .step {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-style: italic;
+    font-size: small;
+}
+
+.step {
+    gap: 5px;
+}
+
+.step span {
+    font-weight: 100;
+    border-bottom: 1px dotted gray;
+    padding-bottom: 5px;
+}
+
+.text-end {
+    text-align: end;
+}
+
+.step p {
+    font-weight: 100;
+    font-weight: 500;
+    color: darkgray;
 }
 
 .label {

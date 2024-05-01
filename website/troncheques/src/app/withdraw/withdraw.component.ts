@@ -35,14 +35,14 @@ export class WithdrawComponent {
 
   ngOnInit() {
     this.withdrawMethodList = [
-      { name: "Wallet", code: "wallet", active: true }, { name: "Bank Account", code: "off-ramp", active: false }
+      { name: "Wallet", code: "wallet", active: true }
     ];
     this.withdrawMethod = this.withdrawMethodList[0];
   }
 
   async confirm() {
     if (this.withdrawalCode.length < 32) {
-      this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Invalid Withdrawal ID.' });
+      this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Invalid Withdraw ID.' });
       return;
     }
     

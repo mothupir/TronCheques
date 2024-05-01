@@ -15,9 +15,7 @@ import { v4 as uuid } from 'uuid';
 })
 export class DepositComponent {
   walletAddress: string | null = "";
-  currency = "sun";
   amount = 0;
-  withdrawalCode = "";
   description = "";
   
   showWithdrawDialog = false;
@@ -30,7 +28,7 @@ export class DepositComponent {
 
   privateKey = "";
   wallet = "";
-  walletList = [{ code: "tronlink", name: "TronLink" }, { code: "tronlink", name: "TronLink" }];
+  walletList = [{ code: "tronlink", name: "TronLink" }];
 
   constructor(
     private walletService: WalletService, 
@@ -41,7 +39,7 @@ export class DepositComponent {
   ) {}
 
   async ngOnInit() {
-    //await this.getTransactionalFees();
+    await this.getTransactionalFees();
   }
 
   async getTransactionalFees() {
@@ -91,17 +89,36 @@ export class DepositComponent {
   async clear() {
     this.walletAddress = "";
     this.amount = 0;
-    this.withdrawalCode = "";
     this.description = "";
   }
 
   async depositWithWallet() {
     this.showConfirmDialog = false;
     this.spinner.show();
-    setTimeout(() => { 
-      this.spinner.hide();
-      this.showWithdrawDialog = true;
-    }, 2000);
+    
+    const password = this.depositService.generate();
+    const code = uuid().toUpperCase();
+    this.client.post(env.BASE_URL + 'deposit', { password: password}).subscribe(
+      async (hash: any) => {
+        await this.depositService.depositWithWallet(code, hash, this.amount, this.description).then(() => {
+          this.messageService.add({ severity: 'success', summary: 'Deposit Successful', detail: 'Amount was successfully deposited, wait a few minutes for it to reflect on your history.' });
+          this.deposit.amount = this.amount;
+          this.deposit.hash = password;
+          this.deposit.uuid = code;
+          this.deposit.fee = this.getFee();
+          this.spinner.hide();
+
+          this.showWithdrawDialog = true;
+        }).catch(error => {
+          this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error}` });
+          this.spinner.hide();
+        });
+      },
+      error => {
+        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error}` });
+        this.spinner.hide();
+      }
+    );
   }
 
   async depositWithPrivateKey() {
@@ -117,7 +134,7 @@ export class DepositComponent {
       ref: this.description,
       key: this.privateKey
     }).subscribe(
-      data => {
+      () => {
         this.messageService.add({ severity: 'success', summary: 'Deposit Successful', detail: 'Amount was successfully deposited, wait a few minutes for it to reflect on your history.' });
         this.deposit.amount = this.amount;
         this.deposit.hash = password;

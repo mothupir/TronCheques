@@ -66,18 +66,16 @@ export class AppComponent {
   async connect() {
     !this.walletService.isConnected() ? this.walletService.connect().then(() => {
       this.items = this.items.map(item => {
-        if (item.name == "History") item.available = true;
         let addr;
         //this.depositService.getOwner().then(res => addr = res);
         if (this.walletService.getAddress() == addr && item.name == "Admin") item.available = true; 
-        if (item.name == "History") item.available = true;
         this.connected = true;
         return item;
       });
     }).catch(err => console.log("Err: ", err)) :
     this.walletService.disconnect().then(() => {
       this.items = this.items.map(item => {
-        if (item.name == "History" || item.name == "Admin") item.available = false;
+        if (item.name == "Admin") item.available = false;
         this.connected = false;
         return item;
       });
@@ -86,5 +84,9 @@ export class AppComponent {
     const tronWeb: any = window.tronWeb;
     const contract = await tronWeb.contract().at('TYfJeDpcWC6NcYiC6TrAceT5pQArYP1oM8');
     //console.log("Value: ", contract.getOwner());
+  }
+
+  getYear() {
+    return new Date().getFullYear();
   }
 }

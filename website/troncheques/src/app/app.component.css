@@ -1,8 +1,7 @@
 .nav-wrapper {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid silver;
-    
+    box-shadow: 2px 2px 2px 0 var(--surface-c);
 }
 
 .header {
@@ -12,13 +11,11 @@
 }
 
 .logo {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: green;
-    padding: 7px;
-    border: 1px solid var(--primary-color);
-    border-radius: 50%;
-    margin-bottom: 5px;
+    height: 46px;
+    padding: 3px;
+    border-radius: 5px;
+    border: 1px solid var(--surface-c);
+    border: 1px solid var(--surface-c);
 }
 
 .nav {
@@ -74,6 +71,18 @@
     background: rgba(0,0,0,0.5);
     padding-top: calc(50vh - 3rem);
     padding-left: calc(50vw - 3rem);
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    text-align: center;
+    font-size: x-small;
+    color: var(--surface-d);
+    padding: 2px;
+    font-style: italic;
+    background: var(--surface-c);
 }
 
 @media only screen and (min-width: 1440px) {

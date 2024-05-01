@@ -10,16 +10,6 @@
     width: 100%;
 }
 
-.currency {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
-
-.currency label {
-    margin-right: 10px;
-}
-
 .info {
     width: 100%;
     padding: 1.5rem 1rem;
@@ -81,6 +71,10 @@
     font-weight: 100;
     border-bottom: 1px dotted gray;
     padding-bottom: 5px;
+}
+
+.text-end {
+    text-align: end;
 }
 
 .step p {

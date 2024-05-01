@@ -10,9 +10,9 @@
     <p-tabView [styleClass]="">
         <p-tabPanel header="Search">
             <div class="search">
-                <p-dropdown [options]="searchCriteria" [(ngModel)]="searchCriterion" optionLabel="name" [showClear]="true" placeholder="Search Criteria" styleClass="p-dropdown-sm"></p-dropdown>
-                <input pInputText [(ngModel)]="searchValue" placeholder="Search Value">
-                <button pButton (click)="search()" label="Search" class="p-button-raised p-button-text" style="width: 120px;" icon="pi pi-search" iconPos="right"></button>
+                <p-dropdown [options]="searchCriteria" [(ngModel)]="searchCriterion" optionLabel="name" placeholder="Search Criteria" styleClass="p-dropdown-sm"></p-dropdown>
+                <input pInputText [(ngModel)]="searchValue" class="p-inputtext-sm" placeholder="Search Value">
+                <button pButton (click)="search()" label="Search" class="p-button-raised p-button-text p-button-sm" style="width: 120px;" icon="pi pi-search" iconPos="right"></button>
             </div>
 
             <div class="separator"></div>
@@ -20,13 +20,13 @@
             <p-scrollPanel [style]="{ width: '100%', height: '60vh' }">
                 <div class="card {{p.active ? 'card-success' : 'card-warning'}}" *ngFor="let p of response.deposits">
                     <div class="detail">
-                        <div class="name">Deposit ID:</div>
+                        <div class="name">Deposit ID</div>
                         <div class="separator"></div>
                         <div class="value">{{p.uuid}}</div>
                     </div>
                     <div class="separator"></div>
                     <div class="detail">
-                        <div class="name">Reference:</div>
+                        <div class="name">Reference</div>
                         <div class="separator"></div>
                         <div class="value">{{p.ref}}</div>
                     </div>
@@ -59,22 +59,22 @@
                     <div class="detail">
                         <div class="name">From</div>
                         <div class="separator"></div>
-                        <div class="value">{{fee.min}} TRX</div>
+                        <div class="value">{{fee.min}} trx</div>
                     </div>
                     <div class="detail">
                         <div class="name">To</div>
                         <div class="separator"></div>
-                        <div class="value">{{fee.max}} TRX</div>
+                        <div class="value">{{fee.max}} trx</div>
                     </div>
                     <div class="detail">
                         <div class="name">Deposit</div>
                         <div class="separator"></div>
-                        <div class="value">{{fee.deposit}} TRX</div>
+                        <div class="value">{{fee.deposit}} trx</div>
                     </div>
                     <div class="detail">
                         <div class="name">Reversal</div>
                         <div class="separator"></div>
-                        <div class="value">{{fee.reversal}} TRX</div>
+                        <div class="value">{{fee.reversal}} trx</div>
                     </div>
                     <div class="actions">
                         <button pButton (click)="showAddEditFeeDialog(fee.id)" icon="pi pi-pencil" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded"></button>
@@ -83,9 +83,9 @@
                 </div>
             </p-scrollPanel>
             <div class="footer">
-                <div class="minmax">
-                    <div>Maximum Deposit - {{maximum}}</div>
-                    <div>Minimum Deposit - {{minimum}}</div>
+                <div class="minmax text-200">
+                    <div>Mininum Deposit Allowed - {{min}} trx</div>
+                    <div>Maximum Deposit Fee - {{max}} trx</div>
                 </div>
                 <button pButton (click)="updateFees()" label="Update" icon="pi pi-save" iconPos="right" class="p-button-warning p-button-sm p-button-text p-button-raised" style="width: 100px;"></button>
             </div>
@@ -118,34 +118,34 @@
                 <div class="detail">
                     <div class="name">Value Of Deposits</div>
                     <div class="separator"></div>
-                    <div class="value">{{statistics.totalDeposits}}</div>
+                    <div class="value">{{statistics.totalDeposits}} trx</div>
                 </div>
                 <div class="detail">
                     <div class="name">Value Of Withdrawals</div>
                     <div class="separator"></div>
-                    <div class="value">{{statistics.totalWithdrawals}}</div>
+                    <div class="value">{{statistics.totalWithdrawals}} trx</div>
                 </div>
                 <div class="detail">
                     <div class="name">Value Of Reversals</div>
                     <div class="separator"></div>
-                    <div class="value">{{statistics.totalReversals}}</div>
+                    <div class="value">{{statistics.totalReversals}} trx</div>
                 </div>
             </div>
             <div class="card card-primary">
                 <div class="detail">
                     <div class="name">Contract Value</div>
                     <div class="separator"></div>
-                    <div class="value">{{statistics.contractValue}}</div>
+                    <div class="value">{{statistics.contractValue}} trx</div>
                 </div>
                 <div class="detail">
                     <div class="name">Active Value</div>
                     <div class="separator"></div>
-                    <div class="value">{{statistics.activeValue}}</div>
+                    <div class="value">{{statistics.activeValue}} trx</div>
                 </div>
                 <div class="detail">
                     <div class="name">Fees Charged</div>
                     <div class="separator"></div>
-                    <div class="value">{{statistics.totalFees}}</div>
+                    <div class="value">{{statistics.totalFees}} trx</div>
                 </div>
             </div>
         </p-tabPanel>
@@ -155,25 +155,25 @@
 <p-dialog header="Add/Edit Fee" [(visible)]="addEditVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
     <div class="details-wrapper">
         <div class="input">
-            <label class="label">From (TRX)</label>
+            <label class="label">From (trx)</label>
             <p-inputGroup>
                 <p-inputNumber id="amount" [(ngModel)]="fee.min" inputId="minmax" [min]="0" mode="decimal"></p-inputNumber>
             </p-inputGroup>
         </div>
         <div class="input">
-            <label class="label">To (TRX)</label>
+            <label class="label">To (trx)</label>
             <p-inputGroup>
                 <p-inputNumber id="amount" [(ngModel)]="fee.max" inputId="minmax" [min]="0" mode="decimal"></p-inputNumber>
             </p-inputGroup>
         </div>
         <div class="input">
-            <label>Deposit Fee (TRX)</label>
+            <label>Deposit Fee (trx)</label>
             <p-inputGroup>
                 <p-inputNumber [(ngModel)]="fee.deposit" inputId="minmax" [min]="0" mode="decimal"></p-inputNumber>
             </p-inputGroup>
         </div>
         <div class="input">
-            <label>Reversal Fee (TRX)</label>
+            <label>Reversal Fee (trx)</label>
             <p-inputGroup>
                 <p-inputNumber [(ngModel)]="fee.reversal" inputId="minmax" [min]="0" mode="decimal"></p-inputNumber>
             </p-inputGroup>
@@ -213,14 +213,14 @@
             <div class="detail">
                 <div class="name">Value</div>
                 <div class="separator"></div>
-                <div class="value">{{deposit.amount}} TRX</div>
+                <div class="value">{{deposit.amount}} trx</div>
             </div>
         </div>
         <div class="card card-primary">
             <div class="detail">
                 <div class="name">Transaction Fee</div>
                 <div class="separator"></div>
-                <div class="value">{{deposit.fee}} TRX</div>
+                <div class="value">{{deposit.fee}} trx</div>
             </div>
         </div>
         <div class="card card-primary">

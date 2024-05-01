@@ -20,16 +20,16 @@ export class AdminComponent {
   fee: Fee = new Fee();
   fees: Fee[] = [];
 
-  minimum: number = 0;
-  maximum: number = 0;
+  min: number = 0;
+  max: number = 0;
 
   statistics: Statistic = new Statistic();
 
   searchCriterion!: SearchCriterion;
   searchValue = ""
   searchCriteria: SearchCriterion[] = [
-    { code: "index", name: "Withdrawal Code" },
-    { code: "owner", name: "Deposit Owner" }
+    { code: "uuid", name: "Withdraw ID" },
+    { code: "owner", name: "Depositor Address" }
   ];
 
   response: Response = new Response();
@@ -46,10 +46,9 @@ export class AdminComponent {
     private client: HttpClient
     ) {}
 
-  ngOnInit() {
-    let deposit = new Deposit();
-    deposit.active = true;
-    this.response.deposits.push(new Deposit(), deposit, new Deposit());
+  async ngOnInit() {
+    await this.getStatistics();
+    await this.getTransactionalFees();
   }
 
   // Statistics
@@ -74,6 +73,8 @@ export class AdminComponent {
       data => {
         this.fees = data;
         this.spinner.hide();
+        this.min = this.fees[0].min;
+        this.max = this.fees[this.fees.length - 1].deposit
       },
       error => {
         this.messageService.add({ severity: 'warn', summary: 'Error getting fees.', detail: `\n ${error.message}` });

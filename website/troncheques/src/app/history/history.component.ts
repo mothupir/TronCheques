@@ -4,7 +4,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DepositService } from '../service/deposit/deposit.service';
 import { SpinnerService } from '../service/spinner/spinner.service';
 import { DatePipe } from '@angular/common';
-import { findIndex } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../environments/environment';
 
@@ -19,6 +18,13 @@ export class HistoryComponent {
   response: Response = new Response();
   deposit: Deposit = new Deposit();
 
+  count: number = 25;
+
+  showBack: boolean = false;
+  showNext: boolean = false;
+
+  cache: Response[] = [];
+
   constructor(
     private depositService: DepositService,
     private confirmationService: ConfirmationService,
@@ -28,15 +34,41 @@ export class HistoryComponent {
     private client: HttpClient
     ) {}
 
-  ngOnInit() {
-    
+  async ngOnInit() {
+    await this.getDeposits();
+    this.checkNextBack();
+  }
+
+  checkNextBack() {
+    if (this.response.index > 0) {
+      this.showNext = true;
+    } else {
+      this.showNext = false;
+    }
+
+    if (this.cache.length > 1) {
+      this.showBack = true;
+    } else {
+      this.showBack = false;
+    }
+  }
+
+  async getPrev() {
+    let index = this.cache.length - 1;
+    this.cache.splice(index, 1);
+    this.response = this.cache[index - 1];
+
+    this.checkNextBack();
   }
 
   async getDeposits() {
     this.spinner.show();
-    await this.depositService.getDeposits(0, 10).then(data => {
+    await this.depositService.getDeposits(this.response.index, this.count).then(data => {
       this.response = data;
+      this.cache.push(data);
       this.spinner.hide();
+      this.checkNextBack();
+      console.log("Cache:", this.cache);
     }).catch(error => {
       this.spinner.hide();
     })
