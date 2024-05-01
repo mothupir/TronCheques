@@ -33,6 +33,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { provideHttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,12 @@ import { provideHttpClient } from '@angular/common/http';
     ToastModule,
     ProgressSpinnerModule
   ],
-  providers: [ConfirmationService, MessageService, provideHttpClient()],
+  providers: [
+    ConfirmationService, 
+    MessageService, 
+    provideHttpClient(), 
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

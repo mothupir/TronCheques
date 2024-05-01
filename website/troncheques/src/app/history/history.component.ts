@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Deposit, Response } from '../model/deposit.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DepositService } from '../service/deposit/deposit.service';
+import { SpinnerService } from '../service/spinner/spinner.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-history',
@@ -17,37 +19,29 @@ export class HistoryComponent {
   constructor(
     private depositService: DepositService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private spinner: SpinnerService,
+    private datePipe: DatePipe
     ) {}
 
   ngOnInit() {
-    let deposit = new Deposit();
-    deposit.active = true;
-    deposit.ref = "Mothupi Mike Ramogayana";
-    this.response.deposits.push(
-      new Deposit(), 
-      deposit, 
-      new Deposit(),
-      new Deposit(), 
-      deposit, 
-      new Deposit(),
-      new Deposit(), 
-      deposit, 
-      new Deposit(),
-      new Deposit(), 
-      deposit, 
-      new Deposit(),
-      new Deposit(), 
-      deposit, 
-      new Deposit(),
-      new Deposit(), 
-      deposit, 
-      new Deposit(),
-    );
+    
   }
 
-  async getMyDeposits() {
-    console.log('Owner: ', 'Hello');
+  async getDeposits() {
+    this.spinner.show();
+    await this.depositService.getDeposits(0, 10).then(data => {
+      console.log("Error:", data);
+      this.response = data;
+      this.spinner.hide();
+    }).catch(error => {
+      console.log("Error:", error);
+      this.spinner.hide();
+    })
+  }
+
+  formatDate(date: Date) {
+    return this.datePipe.transform(date, 'yyyy-MM-dd HH:mm:ss');
   }
 
   showReverseConfirmationPopup(uuid: string, event:Event) {

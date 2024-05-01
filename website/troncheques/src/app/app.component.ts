@@ -22,14 +22,21 @@ export class AppComponent {
   connected = false;
   visible = false;
 
-  constructor(private walletService: WalletService, private depositService: DepositService, private withdrawService: WithdrawService, private spinner: SpinnerService) {
-    this.connected = this.walletService.tronLink.connected;
+  constructor(
+    private walletService: WalletService, 
+    private depositService: DepositService, 
+    private withdrawService: WithdrawService, 
+    private spinner: SpinnerService
+  ) {}
+
+  async ngOnInit() {
+    this.connected = await this.walletService.isConnected();
     if (this.connected) {
       this.items = this.items.map(item => {
         if (item.name == "History") item.available = true;
         let addr;
         //this.depositService.getOwner().then(res => addr = res);
-        if (this.walletService.tronLink.address ==  addr && item.name == "Admin") item.available = true; 
+        if (this.walletService.getAddress() ==  addr && item.name == "Admin") item.available = true; 
         return item;
       });
     }
@@ -57,18 +64,18 @@ export class AppComponent {
   }
 
   async connect() {
-    !this.walletService.tronLink.connected ? this.walletService.tronLink.connect().then(() => {
+    !this.walletService.isConnected() ? this.walletService.connect().then(() => {
       this.items = this.items.map(item => {
         if (item.name == "History") item.available = true;
         let addr;
         //this.depositService.getOwner().then(res => addr = res);
-        if (this.walletService.tronLink.address == addr && item.name == "Admin") item.available = true; 
+        if (this.walletService.getAddress() == addr && item.name == "Admin") item.available = true; 
         if (item.name == "History") item.available = true;
         this.connected = true;
         return item;
       });
     }).catch(err => console.log("Err: ", err)) :
-    this.walletService.tronLink.disconnect().then(() => {
+    this.walletService.disconnect().then(() => {
       this.items = this.items.map(item => {
         if (item.name == "History" || item.name == "Admin") item.available = false;
         this.connected = false;

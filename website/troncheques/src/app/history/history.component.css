@@ -1,0 +1,14 @@
+.indicator {
+    margin-top: 14px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+}
+
+.red {
+    background: red;
+}
+
+.green {
+    background: green;
+}

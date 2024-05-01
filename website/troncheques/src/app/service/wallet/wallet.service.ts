@@ -7,15 +7,25 @@ import { TronLinkAdapter } from '@tronweb3/tronwallet-adapters';
 })
 export class WalletService {
 
-  tronLink: TronLinkAdapter;
-
-  wallets: Adapter[] = [];
+  private tronLink: TronLinkAdapter;
 
   constructor() {
     this.tronLink = new TronLinkAdapter();
   }
 
-  connect() {
+  async connect() {
     this.tronLink.connect();
+  }
+
+  async disconnect() {
+    this.tronLink.disconnect();
+  }
+
+  async isConnected() {
+    return this.tronLink.connected;
+  }
+
+  async getAddress() {
+    return this.tronLink.address;
   }
 }

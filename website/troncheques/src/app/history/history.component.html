@@ -1,24 +1,35 @@
 <div class="wrapper">
     <div class="title">
         <div>Transaction History</div>
-        <button pButton (click)="getMyDeposits()" label="Refresh" icon="pi pi-refresh" class="p-button-sm p-button-raised p-button-info p-button-text"></button>
+        <button pButton (click)="getDeposits()" label="Refresh" icon="pi pi-refresh" class="p-button-sm p-button-raised p-button-info p-button-text"></button>
     </div>
 
     <p-scrollPanel class="panel" [style]="{ width: '100%', height: '70vh' }">
-        <div class="card {{dep.active ? 'card-success' : 'card-warning'}}" *ngFor="let dep of response.deposits">
+        <div class="card card-info" *ngFor="let dep of response.deposits">
             <div class="detail">
-                <div class="name">Deposit ID:</div>
+                <div class="name">Reference</div>
                 <div class="separator"></div>
-                <div class="value">{{dep.uuid}}</div>
+                <div class="value">{{dep.ref}}</div>
             </div>
             <div class="detail">
-                <div class="name">Reference:</div>
+                <div class="name">Amount</div>
                 <div class="separator"></div>
-                <div class="value">{{dep.ref ? dep.ref : "N/A"}}</div>
+                <div class="value">{{dep.amount}} trx</div>
+            </div>
+            <div class="detail">
+                <div class="name">Fee</div>
+                <div class="separator"></div>
+                <div class="value">{{dep.fee}} trx</div>
+            </div>
+            <div class="detail">
+                <div class="name">Timestamp</div>
+                <div class="separator"></div>
+                <div class="value">{{formatDate(dep.getDate())}}</div>
             </div>
             <div class="actions">
-                <button pButton (click)="showReverseConfirmationPopup(dep.uuid, $event)" icon="pi pi-minus-circle"[disabled]="dep.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded" pTooltip="Reverse"></button>
-                <button pButton (click)="showViewDialog(dep.uuid)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded" pTooltip="View"></button>
+                <div class="indicator red" *ngIf="!dep.active" pTooltip="Inactive"></div>
+                <div class="indicator green" *ngIf="dep.active" pTooltip="Active"></div>
+                <button pButton (click)="showViewDialog(dep.uuid)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded"></button>
             </div>
         </div>
     </p-scrollPanel>
