@@ -4,6 +4,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DepositService } from '../service/deposit/deposit.service';
 import { SpinnerService } from '../service/spinner/spinner.service';
 import { DatePipe } from '@angular/common';
+import { findIndex } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment as env } from '../../environments/environment';
 
 @Component({
   selector: 'app-history',
@@ -21,7 +24,8 @@ export class HistoryComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private spinner: SpinnerService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private client: HttpClient
     ) {}
 
   ngOnInit() {
@@ -63,6 +67,31 @@ export class HistoryComponent {
   }
 
   showViewDialog(uuid: string) {
-    this.viewVisible = true;
+    this.spinner.show();
+    const i = this.response.deposits.findIndex(res => res.uuid == uuid);
+    this.deposit = new Deposit();
+
+    this.client.post(env.BASE_URL + 'password', { password: this.response.deposits[i].hash }).subscribe(
+      (data: any) => {
+        this.deposit.uuid = this.response.deposits[i].uuid;
+        this.deposit.hash = data;
+        this.deposit.amount = this.response.deposits[i].amount;
+        this.deposit.fee = this.response.deposits[i].fee;
+        this.deposit.ref = this.response.deposits[i].ref;
+        this.deposit.owner = this.response.deposits[i].owner;
+        this.deposit.withdrawn = this.response.deposits[i].withdrawn;
+        this.deposit.reversed = this.response.deposits[i].reversed;
+        this.deposit.blocked = this.response.deposits[i].blocked;
+        this.deposit.withdrawer = this.response.deposits[i].withdrawer;
+        this.deposit.timestamp = this.response.deposits[i].timestamp;
+        this.deposit.active = this.response.deposits[i].active;
+        this.viewVisible = true;
+        this.spinner.hide();
+      },
+      error => {
+        this.messageService.add({ severity: 'warn', summary: 'Error', detail: error.error });
+        this.spinner.hide();
+      }
+    );
   }
 }

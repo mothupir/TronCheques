@@ -34,6 +34,7 @@ import { MessageService } from 'primeng/api';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { provideHttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { BadgeModule } from 'primeng/badge';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { DatePipe } from '@angular/common';
     DropdownModule,
     ConfirmDialogModule,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    BadgeModule
   ],
   providers: [
     ConfirmationService, 

@@ -27,8 +27,8 @@
                 <div class="value">{{formatDate(dep.getDate())}}</div>
             </div>
             <div class="actions">
-                <div class="indicator red" *ngIf="!dep.active" pTooltip="Inactive"></div>
-                <div class="indicator green" *ngIf="dep.active" pTooltip="Active"></div>
+                <div class="indicator mt-13 red" *ngIf="!dep.active" pTooltip="Inactive"></div>
+                <div class="indicator mt-13 green" *ngIf="dep.active" pTooltip="Active"></div>
                 <button pButton (click)="showViewDialog(dep.uuid)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded"></button>
             </div>
         </div>
@@ -43,44 +43,77 @@
     </div>
 </div>
 
-<p-dialog header="Deposit Details" [(visible)]="viewVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-    <div class="details-wrapper">
+<p-dialog header="Deposit Details" [(visible)]="viewVisible" [modal]="true" [style]="{ width: '70vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <div class="header">
+            <div class="left">Details</div>
+            <div class="right mr-3">
+                <div class="indicator red" *ngIf="!deposit.active" pTooltip="Inactive"></div>
+                <div class="indicator green" *ngIf="deposit.active" pTooltip="Active"></div>
+            </div>
+        </div>
+    </ng-template>
+    <div class="card card-info">
         <div class="detail">
-            <div class="detail-name">Reference</div>
-            <div class="detail-value">{{deposit.ref}}</div>
+            <div class="name">Reference</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.ref}}</div>
         </div>
         <div class="detail">
-            <div class="detail-name">Deposit ID</div>
-            <div class="detail-value">{{deposit.uuid}}</div>
+            <div class="name">Timestamp</div>
+            <div class="separator"></div>
+            <div class="value">{{formatDate(deposit.getDate())}}</div>
+        </div>
+    </div>
+    <div class="card card-info">
+        <div class="detail">
+            <div class="name">Amount</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.amount}} trx</div>
         </div>
         <div class="detail">
-            <div class="detail-name">Owner Address</div>
-            <div class="detail-value">{{deposit.owner}}</div>
+            <div class="name">Fee</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.fee}} trx</div>
+        </div>
+    </div>
+    <div class="card card-info">
+        <div class="detail">
+            <div class="name">Withdrawn</div>
+            <div class="separator"></div>
+            <div class="value" *ngIf="deposit.withdrawn">
+                <p-badge value="Yes" severity="success"></p-badge>
+            </div>
+            <div class="value" *ngIf="!deposit.withdrawn">
+                <p-badge value="No" severity="danger"></p-badge>
+            </div>
         </div>
         <div class="detail">
-            <div class="detail-name">Value (TRX)</div>
-            <div class="detail-value">{{deposit.amount}}</div>
+            <div class="name">Reversed</div>
+            <div class="separator"></div>
+            <div class="value" *ngIf="deposit.reversed">
+                <p-badge value="Yes" severity="success"></p-badge>
+            </div>
+            <div class="value" *ngIf="!deposit.reversed">
+                <p-badge value="No" severity="danger"></p-badge>
+            </div>
+        </div>
+    </div>
+    <div class="card card-info">
+        <div class="detail">
+            <div class="name">Withdraw Code</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.uuid}}</div>
         </div>
         <div class="detail">
-            <div class="detail-name">Transaction Fee (TRX)</div>
-            <div class="detail-value">{{deposit.fee}}</div>
+            <div class="name">Password</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.hash}}</div>
         </div>
-        <div class="detail">
-            <div class="detail-name">Is Active</div>
-            <div class="detail-value">{{deposit.active}}</div>
-        </div>
-        <div class="detail">
-            <div class="detail-name">Is Withdrawn</div>
-            <div class="detail-value">{{deposit.withdrawn}}</div>
-        </div>
-        <div class="detail">
-            <div class="detail-name">Is Blocked</div>
-            <div class="detail-value">{{deposit.blocked}}</div>
-        </div>
-        <div class="detail">
-            <div class="detail-name">Timestamp</div>
-            <div class="detail-value">{{deposit.getDate()}}</div>
-        </div>
+    </div>
+
+    <div>
+        <button pButton *ngIf="deposit.active" label="Reverse" class="p-button-sm p-button-warning"></button>
     </div>
 </p-dialog>
 

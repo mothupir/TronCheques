@@ -103,6 +103,10 @@ export const deposit = (password: string): string => {
     return encrypt(password);
 }
 
+export const password = (password: string): string => {
+    return decrypt(password);
+}
+
 export const depositWithPrivateKey = async (code: string, password: string, amount: number, ref: string, key: string): Promise<string> => {
   try {
     const tronWeb = connectToChain(key);

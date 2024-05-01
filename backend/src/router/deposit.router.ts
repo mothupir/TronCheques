@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { setFees, getFees, getDepositFee, getReversalFee, getStatistics, deposit, withdraw, depositWithPrivateKey } from '../controller/deposit.controller';
+import { setFees, getFees, getDepositFee, getReversalFee, getStatistics, deposit, withdraw, depositWithPrivateKey, password } from '../controller/deposit.controller';
 
 export default (router: express.Router) => {
     router.get('/fees/all', getFees);
@@ -11,5 +11,6 @@ export default (router: express.Router) => {
     router.post('/fees', setFees);
     router.post('/deposit/key', depositWithPrivateKey);
     router.post('/deposit', deposit);
+    router.post('/password', password)
     router.post('/withdraw', withdraw);
 }

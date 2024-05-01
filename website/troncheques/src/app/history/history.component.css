@@ -1,8 +1,11 @@
 .indicator {
-    margin-top: 14px;
     width: 14px;
     height: 14px;
     border-radius: 50%;
+}
+
+.mt-13 {
+    margin-top: 13px;
 }
 
 .red {
@@ -11,4 +14,19 @@
 
 .green {
     background: green;
+}
+
+.header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.left {
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.right {
+    margin-top: 6px;
 }
