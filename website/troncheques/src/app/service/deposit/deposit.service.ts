@@ -45,15 +45,12 @@ export class DepositService {
   }
 
   async depositWithWallet(uuid: string, hash: string, amount: number, ref: string) {
-    console.log("Here");
     if (!this.contract) await this.connectToContract();
 
     const timestamp: number = new Deposit().setDate(new Date());
-    console.log("Here:", timestamp);
     const fee = await this.contract.getDepositFee(this.tronWeb.toSun(amount)).call();
-    console.log("Value:", fee);
     const value = parseInt(this.tronWeb.toSun(amount)) + parseInt(this.tronWeb.BigNumber(fee._hex).toNumber());
-    console.log("Value:", value);
+    
     await this.contract.deposit(uuid, hash, this.tronWeb.toSun(amount), ref, timestamp).send({
       feeLimit:15_000_000_000,
       callValue: value,

@@ -16,6 +16,7 @@ import { v4 as uuid } from 'uuid';
 export class DepositComponent {
   walletAddress: string | null = "";
   amount = 0;
+  fee = 0;
   description = "";
   
   showWithdrawDialog = false;
@@ -69,21 +70,17 @@ export class DepositComponent {
       this.messageService.add({ severity: 'warn', summary: 'Reference Error.', detail: `\n Reference should be at least 3 characters.` });
       return;
     }
+    this.fee = this.getFee();
     this.showConfirmDialog = true;
   }
 
   getFee(): number {
     let fee: Fee = new Fee();
-    if (this.fees.length > 0) {
-      this.fees.forEach(f => {
-        if (f.min <= this.amount && f.max <= this.amount) {
-          fee = new Fee(f);
-        }
-      });
-    } else {
-      fee = new Fee();
+    let fees = this.fees.filter(f => this.amount >= f.min && this.amount <= f.max);
+    if (fees && fees.length > 0) {
+      return fees[0].deposit;
     }
-    return fee.deposit;
+    return this.fees[this.fees.length - 1].deposit;
   }
 
   async clear() {

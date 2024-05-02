@@ -20,7 +20,7 @@ export class WalletService {
         console.log("Connect here")
         break;
     }
-    await this.delay(10000);
+    await this.delay(5000);
 
     const connected = await this.isConnected();
 

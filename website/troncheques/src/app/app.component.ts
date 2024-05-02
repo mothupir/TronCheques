@@ -88,9 +88,11 @@ export class AppComponent {
 
     this.spinner.show();
     await this.walletService.connect(this.wallet).then(async () => {
-      this.spinner.hide();
+      await this.updateNav();
+      this.onNavClick(this.getUrl());
       location.reload();
       this.messageService.add({ severity: 'success', summary: 'Connection Success.', detail: `\n Connected successfully` });
+      this.spinner.hide();
     }).catch (error => {
       this.messageService.add({ severity: 'warn', summary: 'Connection Error.', detail: `\n ${error.message}` });
       this.spinner.hide();
@@ -99,11 +101,10 @@ export class AppComponent {
 
   async disconnect() {
     this.spinner.show();
-    await this.walletService.disconnect().then(() => {
-      this.updateNav();
-      this.onNavClick(this.getUrl());
+    await this.walletService.disconnect().then(async () => {
       this.spinner.hide();
-      this.router.navigate(['/deposit']);
+      this.onNavClick(this.getUrl());
+      await this.updateNav();
     });
   }
 
