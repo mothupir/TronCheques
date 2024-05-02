@@ -1,7 +1,7 @@
 import { deposit_abi } from "../contract/deposit.abi";
 import { encrypt, decrypt } from "../helper/crypto.helper"
-import { connectToChain, connectToContract, generateCode } from "../helper/tronweb.helper"
-import { Fee, Statistic, Deposit, Cheque } from "../model"
+import { connectToChain, connectToContract } from "../helper/tronweb.helper"
+import { Fee, Statistic, Deposit } from "../model"
 
 export const setFees = async (fees: Fee[]) => {
     try {
