@@ -1,5 +1,4 @@
 import express from 'express';
-import http from 'http';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
@@ -19,9 +18,8 @@ app.use(bodyParser.json());
 app.use(morgan('combined', { stream: requestLogStream }));
 app.use('/api', router());
 
-const server = http.createServer(app);
 const port = process.env.PORT ? process.env.PORT : 3000;
 
-server.listen(port, () => {
+app.listen(port, () => {
     console.log("Server waiting on port:", port);
 });
