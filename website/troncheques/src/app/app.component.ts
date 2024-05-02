@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { WalletService } from './service/wallet/wallet.service';
 import { DepositService } from './service/deposit/deposit.service';
 import { SpinnerService } from './service/spinner/spinner.service';
-import { WithdrawService } from './service/withdraw/withdraw.service';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -19,31 +20,47 @@ export class AppComponent {
     { id: 4, name: "Admin", link: 'admin', icon: 'pi pi-user-edit', available: true }
   ];
 
+  wallet = "";
+  walletList = [{ code: "tronlink", name: "TronLink" }];
+
   connected = false;
   visible = false;
 
   constructor(
     private walletService: WalletService, 
-    private depositService: DepositService, 
-    private withdrawService: WithdrawService, 
-    private spinner: SpinnerService
-  ) {}
+    private depositService: DepositService,
+    private spinner: SpinnerService,
+    private messageService: MessageService,
+    private router: Router
+  ) { }
 
   async ngOnInit() {
+    await this.updateNav();
+  }
+
+  async updateNav() {
     this.connected = await this.walletService.isConnected();
-    if (this.connected) {
-      this.items = this.items.map(item => {
-        if (item.name == "History") item.available = true;
-        let addr;
-        //this.depositService.getOwner().then(res => addr = res);
-        if (this.walletService.getAddress() ==  addr && item.name == "Admin") item.available = true; 
-        return item;
-      });
+
+    if (!this.connected) {
+      this.items[2].available = false;
+      this.items[3].available = false;
+      return;
+    }
+
+    const address = await this.walletService.getAddress();
+    const isdAmin = await this.depositService.isOwner(address || "");
+
+    if (!isdAmin) {
+      this.items[3].available = false;
     }
   }
 
   async ngAfterViewInit() {
-    this.onNavClick(this.getUrl());
+    let url = this.getUrl();
+    if (!this.connected && (url == 'Admin' || url == 'History')) {
+      url = 'Deposit';
+    }
+    this.onNavClick(url);
   }
 
   getUrl(): string {
@@ -64,26 +81,30 @@ export class AppComponent {
   }
 
   async connect() {
-    !this.walletService.isConnected() ? this.walletService.connect().then(() => {
-      this.items = this.items.map(item => {
-        let addr;
-        //this.depositService.getOwner().then(res => addr = res);
-        if (this.walletService.getAddress() == addr && item.name == "Admin") item.available = true; 
-        this.connected = true;
-        return item;
-      });
-    }).catch(err => console.log("Err: ", err)) :
-    this.walletService.disconnect().then(() => {
-      this.items = this.items.map(item => {
-        if (item.name == "Admin") item.available = false;
-        this.connected = false;
-        return item;
-      });
+    if (this.connected) {
+      await this.disconnect();
+      return;
+    }
+
+    this.spinner.show();
+    await this.walletService.connect(this.wallet).then(async () => {
+      this.spinner.hide();
+      location.reload();
+      this.messageService.add({ severity: 'success', summary: 'Connection Success.', detail: `\n Connected successfully` });
+    }).catch (error => {
+      this.messageService.add({ severity: 'warn', summary: 'Connection Error.', detail: `\n ${error.message}` });
+      this.spinner.hide();
     });
-    console.log("Here: ")
-    const tronWeb: any = window.tronWeb;
-    const contract = await tronWeb.contract().at('TYfJeDpcWC6NcYiC6TrAceT5pQArYP1oM8');
-    //console.log("Value: ", contract.getOwner());
+  }
+
+  async disconnect() {
+    this.spinner.show();
+    await this.walletService.disconnect().then(() => {
+      this.updateNav();
+      this.onNavClick(this.getUrl());
+      this.spinner.hide();
+      this.router.navigate(['/deposit']);
+    });
   }
 
   getYear() {

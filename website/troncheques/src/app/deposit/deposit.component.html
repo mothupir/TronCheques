@@ -56,7 +56,7 @@
     </div>
 
     <p-scrollPanel [style]="{ width: '100%', height: '35vh' }">
-        <div class="card card-disabled" *ngFor="let fee of fees">
+        <div class="card card-info" *ngFor="let fee of fees">
             <div class="detail">
                 <div class="name">From</div>
                 <div class="separator"></div>
@@ -127,7 +127,7 @@
         </div>
         <label class="label mt-3">Sign With Private Key</label>
         <div class="row">
-            <input pInputText placeholder="Private Key" class="p-inputtext-sm" style="width: 380px;">
+            <input pInputText [(ngModel)]="privateKey" placeholder="Private Key" class="p-inputtext-sm" style="width: 380px;">
             <button pButton (click)="depositWithPrivateKey()" label="Sign" icon="pi pi-user-edit" iconPos="right" class=" p-button-text p-button-raised"></button>
         </div>
     </div>

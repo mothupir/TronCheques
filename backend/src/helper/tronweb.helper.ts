@@ -4,8 +4,9 @@ export const connectToChain = (privateKey: string = process.env.PRIVATE_KEY) => 
     const tronWeb = new TronWeb({
         fullHost: process.env.FULL_HOST,
         headers: { 'TRON-PRO-API-KEY': process.env.API_KEY },
-        privateKey: "49b1b7927e607dab0fbe1f38114f90916ddaf86234ec1170c9385b7913da65b2"
+        privateKey: privateKey
     });
+
     return tronWeb;
 }
 

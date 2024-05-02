@@ -110,12 +110,12 @@ export class DepositComponent {
 
           this.showWithdrawDialog = true;
         }).catch(error => {
-          this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error}` });
+          this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.error}` });
           this.spinner.hide();
         });
       },
       error => {
-        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error}` });
+        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.error}` });
         this.spinner.hide();
       }
     );
@@ -126,6 +126,8 @@ export class DepositComponent {
     this.showConfirmDialog = false;
     const password = this.depositService.generate();
     const code = uuid().toUpperCase();
+
+    console.log(this.privateKey);
 
     this.client.post(env.BASE_URL + 'deposit/key', {
       code: code,

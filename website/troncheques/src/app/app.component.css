@@ -52,8 +52,9 @@
 }
 
 .separator {
-    border-right: 1px solid silver;
+    border-right: 1px solid var(--surface-d);
     margin-left: 10px;
+    margin-right: 10px;
 }
 
 .burger {

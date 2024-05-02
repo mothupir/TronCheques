@@ -42,7 +42,7 @@ export const getFees = async (): Promise<Fee[]> => {
         fee.reversal = parseInt( tronWeb.fromSun(tronWeb.BigNumber(d.reversal._hex).toNumber()));
         fees.push(fee);
       });
-
+      
       return fees;
     } catch (error) {
       throw new Error(error);
@@ -120,7 +120,7 @@ export const depositWithPrivateKey = async (code: string, password: string, amou
       callValue:tronWeb.toSun(amount + fee),
       shouldPollResponse:true
     });
-    console.log("Transaction Id:", tx);
+    
     return tx;
   } catch (error) {
     throw new Error(error.message);

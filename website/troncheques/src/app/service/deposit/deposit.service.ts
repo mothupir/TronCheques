@@ -25,9 +25,10 @@ export class DepositService {
   async connectToContract() {
     const walletConnected = await this.wallet.isConnected();
     if (!walletConnected) {
-      await this.wallet.connect();
-      this.address = await this.wallet.getAddress();
+      throw new Error("Connect to wallet to use this option.");
     }
+
+    this.address = await this.wallet.getAddress();
 
     if (!this.contract) {
       this.tronWeb = window.tronWeb;
@@ -37,13 +38,22 @@ export class DepositService {
     }
   }
 
+  async isOwner(address: string) {
+    if (!this.contract) await this.connectToContract();
+    const owner = await this.contract.getOwner().call();
+    return this.tronWeb.address.fromHex(owner) == address;
+  }
+
   async depositWithWallet(uuid: string, hash: string, amount: number, ref: string) {
+    console.log("Here");
     if (!this.contract) await this.connectToContract();
 
     const timestamp: number = new Deposit().setDate(new Date());
+    console.log("Here:", timestamp);
     const fee = await this.contract.getDepositFee(this.tronWeb.toSun(amount)).call();
+    console.log("Value:", fee);
     const value = parseInt(this.tronWeb.toSun(amount)) + parseInt(this.tronWeb.BigNumber(fee._hex).toNumber());
-
+    console.log("Value:", value);
     await this.contract.deposit(uuid, hash, this.tronWeb.toSun(amount), ref, timestamp).send({
       feeLimit:15_000_000_000,
       callValue: value,
