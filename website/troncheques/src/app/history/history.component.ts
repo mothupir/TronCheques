@@ -61,17 +61,27 @@ export class HistoryComponent {
     this.checkNextBack();
   }
 
-  async getDeposits() {
+  async getNext() {
+    await this.getDeposits().then((data) => {
+      if (data) {
+        this.cache.push(data);
+      }
+    });
+  }
+
+  async getDeposits(): Promise<Response> {
     this.spinner.show();
+    let res!: Response;
     await this.depositService.getDeposits(this.response.index, this.count).then(data => {
       this.response = data;
-      this.cache.push(data);
+      res = data;
       this.spinner.hide();
       this.checkNextBack();
-      console.log("Cache:", this.cache);
     }).catch(error => {
       this.spinner.hide();
-    })
+    });
+    
+    return res;
   }
 
   formatDate(date: Date) {

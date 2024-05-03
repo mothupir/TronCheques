@@ -13,6 +13,4 @@ export default (router: express.Router) => {
     router.post('/deposit', deposit);
     router.post('/password', password)
     router.post('/withdraw', withdraw);
-
-    router.get('/.*', getFees);
 }

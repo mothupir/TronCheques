@@ -70,8 +70,8 @@ export class DepositComponent {
       this.messageService.add({ severity: 'warn', summary: 'Reference Error.', detail: `\n Reference should be at least 3 characters.` });
       return;
     }
-    this.fee = this.getFee();
     this.showConfirmDialog = true;
+    this.fee = this.getFee();
   }
 
   getFee(): number {
@@ -107,12 +107,12 @@ export class DepositComponent {
 
           this.showWithdrawDialog = true;
         }).catch(error => {
-          this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.error}` });
+          this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}` });
           this.spinner.hide();
         });
       },
       error => {
-        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.error}` });
+        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}` });
         this.spinner.hide();
       }
     );

@@ -8,17 +8,26 @@ import { createStream } from 'rotating-file-stream';
 import dotenv from 'dotenv';
 import router from './router';
 
+import { setFees, getFees, getDepositFee, getReversalFee, getStatistics, deposit, withdraw, depositWithPrivateKey, password } from './controller/deposit.controller';
+import { env } from 'process';
+
 dotenv.config();
 const requestLogStream = createStream('request.log', { interval: '1d', path: path.join(__dirname, 'logs') });
 
+const corsOptions = {
+    origin: env.CORS,
+    optionsSuccessStatus: 200,
+};
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(compression());
 app.use(bodyParser.json());
 app.use(morgan('combined', { stream: requestLogStream }));
-app.use('/api', router());
 
 const port = process.env.PORT ? process.env.PORT : 3000;
+
+app.use('/api', router());
 
 app.listen(port, () => {
     console.log("Server waiting on port:", port);
