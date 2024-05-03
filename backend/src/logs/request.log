@@ -56,3 +56,5 @@
 ::1 - - [03/May/2024:07:19:43 +0000] "GET /api/fees/all HTTP/1.1" 304 - "http://localhost:4200/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 ::1 - - [03/May/2024:07:20:13 +0000] "GET /api/statistic HTTP/1.1" 304 - "http://localhost:4200/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 ::1 - - [03/May/2024:07:20:43 +0000] "GET /api/statistic HTTP/1.1" 304 - "http://localhost:4200/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [03/May/2024:07:25:35 +0000] "GET /api/fees/all HTTP/1.1" 304 - "http://localhost:4200/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [03/May/2024:07:25:39 +0000] "GET /api/statistic HTTP/1.1" 304 - "http://localhost:4200/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
