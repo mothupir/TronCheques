@@ -33,4 +33,4 @@ app.listen(port, () => {
     console.log("Server waiting on port:", port);
 });
 
-module.exports = app;
+export default app;
