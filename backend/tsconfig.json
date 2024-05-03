@@ -1,12 +1,14 @@
 {
     "compilerOptions": {
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
-        "baseUrl": "src",
         "outDir": "dist",
         "sourceMap": true,
+        "target": "ESNext",
+        "module": "CommonJS",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
         "noImplicitAny": true,
+        "skipLibCheck": true,
         "types": ["node", "@daochild/tronweb-typescript"]
     },
-    "include": ["src/**/*"]
+    "include": ["./api/*.ts"]
 }

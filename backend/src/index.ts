@@ -25,23 +25,12 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(morgan('combined', { stream: requestLogStream }));
 
-const port = process.env.PORT ? process.env.PORT : 3000;
+const port = process.env.PORT ? process.env.PORT : 3001;
 
-//app.use('/api', router());
-
-app.get('/fees/all', getFees);
-app.get('/fees/deposit', getDepositFee);
-app.get('/fees/reversal', getReversalFee);
-app.get('/statistic', getStatistics);
-
-app.post('/fees', setFees);
-app.post('/deposit/key', depositWithPrivateKey);
-app.post('/deposit', deposit);
-app.post('/password', password)
-app.post('/withdraw', withdraw);
-
-module.exports = app;
+app.use('/api', router());
 
 app.listen(port, () => {
     console.log("Server waiting on port:", port);
 });
+
+module.exports = app;
