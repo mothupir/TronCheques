@@ -62,3 +62,4 @@
 ::1 - - [03/May/2024:09:01:00 +0000] "GET /api/getFees HTTP/1.1" 404 150 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 ::1 - - [03/May/2024:09:01:11 +0000] "GET /api/fees/all HTTP/1.1" 200 234 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 ::1 - - [03/May/2024:09:01:12 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:3001/api/fees/all" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [03/May/2024:09:38:29 +0000] "GET /api/fees/all HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
