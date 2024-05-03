@@ -18,7 +18,7 @@ const corsOptions = {
 };
 
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(compression());
 app.use(bodyParser.json());
 app.use(morgan('combined', { stream: requestLogStream }));
