@@ -7,8 +7,6 @@ import path from 'path';
 import { createStream } from 'rotating-file-stream';
 import dotenv from 'dotenv';
 import router from './router';
-
-import { setFees, getFees, getDepositFee, getReversalFee, getStatistics, deposit, withdraw, depositWithPrivateKey, password } from './controller/deposit.controller';
 import { env } from 'process';
 
 dotenv.config();

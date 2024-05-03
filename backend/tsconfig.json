@@ -10,5 +10,5 @@
         "skipLibCheck": true,
         "types": ["node", "@daochild/tronweb-typescript"]
     },
-    "include": ["./api/*.ts"]
+    "include": ["./api/*.ts", "src/index.ts"]
 }
