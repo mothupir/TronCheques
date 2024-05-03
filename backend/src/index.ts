@@ -29,6 +29,8 @@ const port = process.env.PORT ? process.env.PORT : 3000;
 
 app.use('/api', router());
 
+module.exports = app;
+
 app.listen(port, () => {
     console.log("Server waiting on port:", port);
 });
