@@ -17,6 +17,9 @@ interface SearchCriterion {
   styleUrl: './admin.component.css'
 })
 export class AdminComponent {
+  retries: number = 0;
+  maxRetries: number = 2;
+
   fee: Fee = new Fee();
   fees: Fee[] = [];
 
@@ -58,10 +61,19 @@ export class AdminComponent {
       data => {
         this.statistics = data;
         this.spinner.hide();
+        this.retries = 0;
       },
-      error => {
-        this.messageService.add({ severity: 'warn', summary: 'Error getting statistics.', detail: `\n ${error.message}` });
-        this.spinner.hide();
+      async error => {
+        if (this.retries <= this.maxRetries) {
+          this.retries++;
+          await this.depositService.delay(3000);
+          console.log("retrying..");
+          await this.getStatistics();
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Error getting statistics.', detail: `\n ${error.message}` });
+          this.spinner.hide();
+          this.retries = 0;
+        }
       }
     );
   }
@@ -75,10 +87,19 @@ export class AdminComponent {
         this.spinner.hide();
         this.min = this.fees[0].min;
         this.max = this.fees[this.fees.length - 1].deposit
+        this.retries = 0;
       },
-      error => {
-        this.messageService.add({ severity: 'warn', summary: 'Error getting fees.', detail: `\n ${error.message}` });
-        this.spinner.hide();
+      async error => {
+        if (this.retries <= this.maxRetries) {
+          this.retries++;
+          await this.depositService.delay(3000);
+          console.log("retrying..");
+          await this.getTransactionalFees();
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Error getting fees.', detail: `\n ${error.message}` });
+          this.spinner.hide();
+          this.retries = 0;
+        }
       }
     );
   }
@@ -89,10 +110,19 @@ export class AdminComponent {
       data => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fees updated successfully.' });
         this.spinner.hide();
+        this.retries = 0;
       },
-      error => {
-        this.messageService.add({ severity: 'warn', summary: 'Failed to update fees.', detail: `\n ${error.message}` });
-        this.spinner.hide();
+      async error => {
+        if (this.retries <= this.maxRetries) {
+          this.retries++;
+          await this.depositService.delay(3000);
+          console.log("retrying..");
+          await this.updateFees();
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Failed to update fees.', detail: `\n ${error.message}` });
+          this.spinner.hide();
+          this.retries = 0;
+        }
       }
     );
   }
@@ -152,7 +182,7 @@ export class AdminComponent {
       case 'owner':
         await this.getMyDeposits();
         break;
-    }
+    }S
   }
 
   async getDeposit() {

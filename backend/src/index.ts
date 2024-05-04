@@ -13,8 +13,7 @@ dotenv.config();
 const requestLogStream = createStream('request.log', { interval: '1d', path: path.join(__dirname, 'logs') });
 
 const corsOptions = {
-    origin: env.CORS,
-    optionsSuccessStatus: 200,
+    origin: env.CORS
 };
 
 const app = express();
@@ -23,7 +22,7 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(morgan('combined', { stream: requestLogStream }));
 
-const port = process.env.PORT ? process.env.PORT : 3001;
+const port = process.env.PORT ? process.env.PORT : 3000;
 
 app.use('/api', router());
 

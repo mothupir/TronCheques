@@ -13,6 +13,9 @@ import { environment as env } from '../../environments/environment';
   styleUrl: './history.component.css'
 })
 export class HistoryComponent {
+  retries: number = 0;
+  maxRetries: number = 2;
+
   viewVisible = false;
 
   response: Response = new Response();
@@ -77,8 +80,17 @@ export class HistoryComponent {
       res = data;
       this.spinner.hide();
       this.checkNextBack();
-    }).catch(error => {
-      this.spinner.hide();
+      this.retries = 0;
+    }).catch(async error => {
+      if (this.retries <= this.maxRetries) {
+        this.retries++;
+        await this.depositService.delay(3000);
+        console.log("retrying..");
+        await this.getDeposits();
+      } else {
+        this.spinner.hide();
+        this.retries = 0;
+      }
     });
     
     return res;
@@ -106,9 +118,18 @@ export class HistoryComponent {
     await this.depositService.reverse(uuid).then(() => {
       this.spinner.show();
       this.messageService.add({ severity: 'success', summary: 'Successful', detail: "Deposit has been successfully reversed. Funds are returned to depositor's wallet" });
-    }).catch(error => {
-      this.spinner.show();
-      this.messageService.add({ severity: 'warn', summary: 'Reversal Error', detail: error.error });
+      this.retries = 0;
+    }).catch(async error => {
+      if (this.retries <= this.maxRetries) {
+        this.retries++;
+        await this.depositService.delay(3000);
+        console.log("retrying..");
+        await this.reverse(uuid);
+      } else {
+        this.spinner.hide();
+        this.messageService.add({ severity: 'warn', summary: 'Reversal Error', detail: error.error });
+        this.retries = 0;
+      }
     });
   }
 
@@ -133,10 +154,19 @@ export class HistoryComponent {
         this.deposit.active = this.response.deposits[i].active;
         this.viewVisible = true;
         this.spinner.hide();
+        this.retries = 0;
       },
-      error => {
-        this.messageService.add({ severity: 'warn', summary: 'Error', detail: error.error });
-        this.spinner.hide();
+      async error => {
+        if (this.retries <= this.maxRetries) {
+          this.retries++;
+          await this.depositService.delay(3000);
+          console.log("retrying..");
+          await this.showViewDialog(uuid);
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Failed to update fees.', detail: `\n ${error.message}` });
+          this.spinner.hide();
+          this.retries = 0;
+        }
       }
     );
   }

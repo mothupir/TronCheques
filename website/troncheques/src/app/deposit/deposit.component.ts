@@ -14,6 +14,9 @@ import { v4 as uuid } from 'uuid';
   styleUrl: './deposit.component.css'
 })
 export class DepositComponent {
+  retries: number = 0;
+  maxRetries: number = 2;
+
   walletAddress: string | null = "";
   amount = 0;
   fee = 0;
@@ -53,10 +56,19 @@ export class DepositComponent {
           this.max = this.fees[this.fees.length - 1].deposit
         }
         this.spinner.hide();
+        this.retries = 0;
       },
-      error => {
-        this.messageService.add({ severity: 'warn', summary: 'Fees Error.', detail: `\n ${error.message}` });
-        this.spinner.hide();
+      async error => {
+        if (this.retries <= this.maxRetries) {
+          this.retries++;
+          await this.depositService.delay(3000);
+          console.log("retrying..");
+          await this.getTransactionalFees();
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Fees Error.', detail: `\n ${error.message}` });
+          this.spinner.hide();
+          this.retries = 0;
+        }
       }
     );
   }
