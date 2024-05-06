@@ -203,7 +203,6 @@ export class AdminComponent {
       res.deposits.push(data);
       this.retries = 0;
       this.response = res;
-      console.log("Deposit:", res);
       this.spinner.hide();
     }).catch(async error => {
       if (this.retries <= this.maxRetries) {
