@@ -16,8 +16,8 @@ export class AppComponent {
   items = [
     { id: 1, name: "Deposit", link: 'deposit', icon: 'pi pi-user-minus', available: true },
     { id: 2, name: "Withdraw", link: 'withdraw', icon: 'pi pi-user-plus', available: true },
-    { id: 3, name: "History", link: 'history', icon: 'pi pi-history', available: true },
-    { id: 4, name: "Admin", link: 'admin', icon: 'pi pi-user-edit', available: true }
+    { id: 3, name: "History", link: 'history', icon: 'pi pi-history', available: false },
+    { id: 4, name: "Admin", link: 'admin', icon: 'pi pi-user-edit', available: false }
   ];
 
   wallet = "";
@@ -26,62 +26,61 @@ export class AppComponent {
   connected = false;
   visible = false;
 
+  isAdmin: boolean = false;
+  isConnected: boolean = false;
+
   constructor(
     private walletService: WalletService, 
     private depositService: DepositService,
     private spinner: SpinnerService,
     private messageService: MessageService,
     private router: Router
-  ) { }
+  ) {
+   }
 
   async ngOnInit() {
-    await this.updateNav();
+    console.log("Connected:", this.isConnected);
   }
 
   async updateNav() {
-    this.connected = await this.walletService.isConnected();
-
-    if (!this.connected) {
-      this.items[2].available = false;
-      this.items[3].available = false;
-      return;
-    }
-
+    this.isConnected = await this.walletService.isConnected();
     const address = await this.walletService.getAddress();
-    const isdAmin = await this.depositService.isOwner(address || "");
-
-    if (!isdAmin) {
-      this.items[3].available = false;
-    }
+    this.isAdmin = await this.depositService.isOwner(address || "");
   }
 
   async ngAfterViewInit() {
     let url = this.getUrl();
-    if (!this.connected && (url == 'Admin' || url == 'History')) {
-      url = 'Deposit';
+    if (url.toLowerCase() == 'admin' || url.toLowerCase() == 'history') {
+      this.isConnected = await this.walletService.isConnected();
+      if (!this.isConnected) {
+        this.updateNav();
+        this.router.navigateByUrl('deposit');
+        this.onNavClick('deposit');
+      }
     }
+    await this.updateNav();
     this.onNavClick(url);
   }
 
   getUrl(): string {
     const href = window.location.href;
-    const name = this.items.filter(item => href.includes(item.link))[0]?.name
-    return name ? name : 'Deposit';
+    const i1 = href.lastIndexOf('/') + 1;
+    const i2 = href.length;
+    const str = href.slice(i1, i2);
+    return str || 'deposit';
   }
 
   onNavClick(id: string) {
-    this.items.forEach(item => {
-      if (item.available) {
-        document.getElementById(item.name)!.style.color = 'white';
-        document.getElementById(item.name)!.style.background = 'transparent';
-      }
-    });
-    document.getElementById(id)!.style.color = 'black';
-    document.getElementById(id)!.style.background = 'var(--highlight-bg)';
+    id = id.toLocaleLowerCase();
+    document.getElementById('deposit')?.classList.remove('active');
+    document.getElementById('withdraw')?.classList.remove('active');
+    document.getElementById('history')?.classList.remove('active');
+    document.getElementById('admin')?.classList.remove('active');
+    document.getElementById(id)?.classList.add('active');
   }
 
   async connect() {
-    if (this.connected) {
+    if (await this.walletService.isConnected()) {
       await this.disconnect();
       return;
     }
@@ -89,9 +88,6 @@ export class AppComponent {
     this.spinner.show();
     await this.walletService.connect(this.wallet).then(async () => {
       await this.updateNav();
-      this.onNavClick(this.getUrl());
-      location.reload();
-      this.messageService.add({ severity: 'success', summary: 'Connection Success.', detail: `\n Connected successfully` });
       this.spinner.hide();
     }).catch (error => {
       this.messageService.add({ severity: 'warn', summary: 'Connection Error.', detail: `\n ${error.message}` });
@@ -101,11 +97,11 @@ export class AppComponent {
 
   async disconnect() {
     this.spinner.show();
-    await this.walletService.disconnect().then(async () => {
-      this.spinner.hide();
-      this.onNavClick(this.getUrl());
-      await this.updateNav();
-    });
+    await this.walletService.disconnect();
+    this.updateNav();
+    this.router.navigateByUrl('deposit');
+    this.onNavClick('deposit');
+    this.spinner.hide();
   }
 
   getYear() {

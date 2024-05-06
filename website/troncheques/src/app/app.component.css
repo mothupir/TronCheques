@@ -31,7 +31,7 @@
     cursor: default;
     border-radius: 3px;
     transition: 0.3s;
-    color: var(--primary-color-text);
+    color: white;
 }
 
 .btn-item i {
@@ -42,8 +42,12 @@
     margin-left: 10px;
 }
 
+.active {
+    color: black;
+    background: var(--primary-color);
+}
+
 .btn-item:hover {
-    background: var(--highlight-bg);
     border: 1px solid var(--highlight-bg);
 }
 

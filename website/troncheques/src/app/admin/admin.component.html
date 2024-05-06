@@ -18,21 +18,31 @@
             <div class="separator"></div>
 
             <p-scrollPanel [style]="{ width: '100%', height: '60vh' }">
-                <div class="card {{p.active ? 'card-success' : 'card-warning'}}" *ngFor="let p of response.deposits">
-                    <div class="detail">
-                        <div class="name">Deposit ID</div>
-                        <div class="separator"></div>
-                        <div class="value">{{p.uuid}}</div>
-                    </div>
-                    <div class="separator"></div>
+                <div class="card card-info" *ngFor="let dep of response.deposits">
                     <div class="detail">
                         <div class="name">Reference</div>
                         <div class="separator"></div>
-                        <div class="value">{{p.ref}}</div>
+                        <div class="value">{{dep.ref}}</div>
+                    </div>
+                    <div class="detail">
+                        <div class="name">Amount</div>
+                        <div class="separator"></div>
+                        <div class="value">{{dep.amount}} trx</div>
+                    </div>
+                    <div class="detail">
+                        <div class="name">Fee</div>
+                        <div class="separator"></div>
+                        <div class="value">{{dep.fee}} trx</div>
+                    </div>
+                    <div class="detail">
+                        <div class="name">Timestamp</div>
+                        <div class="separator"></div>
+                        <div class="value">{{formatDate(dep.getDate())}}</div>
                     </div>
                     <div class="actions">
-                        <button pButton (click)="showReverseConfirmationPopup(p.uuid, $event)" icon="pi pi-minus-circle" [disabled]="p.active ? false : true" iconPos="right" class="p-button-sm p-button-text p-button-warning p-button-rounded"></button>
-                        <button pButton (click)="showViewDialog(p.uuid)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded"></button>
+                        <div class="indicator mt-13 red" *ngIf="!dep.active" pTooltip="Inactive"></div>
+                        <div class="indicator mt-13 green" *ngIf="dep.active" pTooltip="Active"></div>
+                        <button pButton (click)="showViewDialog(dep.uuid)" icon="pi pi-eye" iconPos="right" class="p-button-sm p-button-text p-button-info p-button-rounded"></button>
                     </div>
                 </div>
             </p-scrollPanel>
@@ -40,8 +50,8 @@
             <div class="separator"></div>
 
             <div class="nextback">
-                <button pButton label="Prev" icon="pi pi-angle-left" class="p-button-text p-button-sm p-button-raised p-button-warning"></button>
-                <button pButton label="Next" icon="pi pi-angle-right" iconPos="right" class="p-button-text p-button-sm p-button-raised p-button-info"></button>
+                <button pButton (click)="getPrev()" [disabled]="!showBack" label="Prev" class="p-button-raised p-button-sm p-button-text p-button-warning" icon="pi pi-angle-left"></button>
+                <button pButton (click)="getNext()" [disabled]="!showNext" label="Next" class="p-button-raised p-button-sm p-button-text p-button-info" icon="pi pi-angle-right" iconPos="right"></button>
             </div>
         </p-tabPanel>
 
@@ -186,70 +196,76 @@
     </div>
 </p-dialog>
 
-<p-dialog header="Deposit Details" [(visible)]="viewVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-    <div class="details-wrapper">
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Reference</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.ref ? deposit.ref : "N/A"}}</div>
+<p-dialog header="Deposit Details" [(visible)]="viewVisible" [modal]="true" [style]="{ width: '70vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <div class="header">
+            <div class="left">Details</div>
+            <div class="right mr-3">
+                <div class="indicator red" *ngIf="!deposit.active" pTooltip="Inactive"></div>
+                <div class="indicator green" *ngIf="deposit.active" pTooltip="Active"></div>
             </div>
         </div>
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Deposit ID</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.uuid}}</div>
+    </ng-template>
+    <div class="card card-info">
+        <div class="detail">
+            <div class="name">Reference</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.ref}}</div>
+        </div>
+        <div class="detail">
+            <div class="name">Timestamp</div>
+            <div class="separator"></div>
+            <div class="value">{{formatDate(deposit.getDate())}}</div>
+        </div>
+    </div>
+    <div class="card card-info">
+        <div class="detail">
+            <div class="name">Amount</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.amount}} trx</div>
+        </div>
+        <div class="detail">
+            <div class="name">Fee</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.fee}} trx</div>
+        </div>
+    </div>
+    <div class="card card-info">
+        <div class="detail">
+            <div class="name">Withdrawn</div>
+            <div class="separator"></div>
+            <div class="value" *ngIf="deposit.withdrawn">
+                <p-badge value="Yes" severity="success"></p-badge>
+            </div>
+            <div class="value" *ngIf="!deposit.withdrawn">
+                <p-badge value="No" severity="danger"></p-badge>
             </div>
         </div>
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Owner Address</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.owner ? deposit.owner : "N/A"}}</div>
+        <div class="detail">
+            <div class="name">Reversed</div>
+            <div class="separator"></div>
+            <div class="value" *ngIf="deposit.reversed">
+                <p-badge value="Yes" severity="success"></p-badge>
+            </div>
+            <div class="value" *ngIf="!deposit.reversed">
+                <p-badge value="No" severity="danger"></p-badge>
             </div>
         </div>
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Value</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.amount}} trx</div>
-            </div>
+    </div>
+    <div class="card card-info">
+        <div class="detail">
+            <div class="name">Withdraw ID</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.uuid}}</div>
         </div>
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Transaction Fee</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.fee}} trx</div>
-            </div>
+        <div class="detail">
+            <div class="name">Password</div>
+            <div class="separator"></div>
+            <div class="value">{{deposit.hash}}</div>
         </div>
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Is Active</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.active ? "Yes" : "No"}}</div>
-            </div>
-        </div>
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Is Withdrawn</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.withdrawn ? "Yes" : "No"}}</div>
-            </div>
-        </div>
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Is Blocked</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.blocked ? "Yes" : "No"}}</div>
-            </div>
-        </div>
-        <div class="card card-primary">
-            <div class="detail">
-                <div class="name">Timestamp</div>
-                <div class="separator"></div>
-                <div class="value">{{deposit.getDate().getDate()}}</div>
-            </div>
-        </div>
+    </div>
+
+    <div>
+        <button pButton (click)="showReverseConfirmationPopup(deposit.uuid, $event)" *ngIf="deposit.active" label="Reverse" class="p-button-sm p-button-warning p-button-raised p-button-text"></button>
     </div>
 </p-dialog>

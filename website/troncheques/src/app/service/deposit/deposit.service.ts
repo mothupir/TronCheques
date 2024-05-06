@@ -99,6 +99,22 @@ export class DepositService {
     return response;
   }
 
+  async getDepositsByAddress(address: string, index: number, count: number) {
+    if (!this.contract) await this.connectToContract();
+
+    let response = new Response();
+
+    try {
+      const data = await this.contract.getDepositsByAddress(address, index, count).call();
+      response.index = this.tronWeb.BigNumber(data.index._hex).toNumber();
+      data.deposits.forEach((res:any) => response.deposits.push(this.toDeposit(res)));
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+    
+    return response;
+  }
+
   delay = (ms:any) => new Promise(res => setTimeout(res, ms));
 
   async getMyDeposits(index: number, count: number, address: string) {

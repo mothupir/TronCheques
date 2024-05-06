@@ -2,12 +2,22 @@
   <div class="nav-wrapper pb-2">
     <img class="logo" src="../assets/logo-wb.png">
     <div class="nav">
-      <div *ngFor="let item of items">
-        <div class="btn-item" *ngIf="item.available" id="{{item.name}}" (click)="onNavClick(item.name)" routerLink="{{item.link}}"><i class="{{item.icon}}"></i> {{item.name}}</div>
+      <div>
+        <div class="btn-item active" id="deposit" (click)="onNavClick('deposit')" routerLink="deposit"><i class="pi pi-user-plus"></i>Deposit</div>
       </div>
+      <div>
+        <div class="btn-item" id="withdraw" (click)="onNavClick('withdraw')" routerLink="withdraw"><i class="pi pi-user-minus"></i>Withdraw</div>
+      </div>
+      <div>
+        <div class="btn-item" id="history" *ngIf="isConnected" (click)="onNavClick('history')" routerLink="history"><i class="pi pi-history"></i>History</div>
+      </div>
+      <div>
+        <div class="btn-item" id="admin" *ngIf="isAdmin" (click)="onNavClick('admin')" routerLink="admin"><i class="pi pi-user-edit"></i>Admin</div>
+      </div>
+
       <div class="separator"></div>
-      <p-dropdown [options]="walletList" [(ngModel)]="wallet" *ngIf="!connected" optionLabel="name" placeholder="Select Wallet" autoWidth="false"></p-dropdown>
-      <p-button class="btn-connect" (click)="connect()" [disabled]="!wallet && !connected" label="{{connected ? 'Disconnect' : 'Connect'}}" icon="{{connected ? 'pi pi-sign-out' : 'pi pi-sign-in'}}" styleClass="{{connected ? 'p-button-danger' : 'p-button-success'}} p-button-outlined p-button-raised p-button-sm" iconPos="right"></p-button>
+      <p-dropdown [options]="walletList" [(ngModel)]="wallet" *ngIf="!isConnected" optionLabel="name" placeholder="Select Wallet" autoWidth="false"></p-dropdown>
+      <p-button class="btn-connect" (click)="connect()" [disabled]="!wallet && !isConnected" label="{{isConnected ? 'Disconnect' : 'Connect'}}" icon="{{isConnected ? 'pi pi-sign-out' : 'pi pi-sign-in'}}" styleClass="{{isConnected ? 'p-button-danger' : 'p-button-success'}} p-button-outlined p-button-raised p-button-sm" iconPos="right"></p-button>
     </div>
     <div class="burger">
       <button pButton (click)="visible = true" class="p-button-text p-button-secondary" icon="pi pi-bars"></button>
