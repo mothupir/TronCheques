@@ -136,8 +136,6 @@ export class DepositComponent {
     const password = this.depositService.generate();
     const code = uuid().toUpperCase();
 
-    console.log(this.privateKey);
-
     this.client.post(env.BASE_URL + 'deposit/key', {
       code: code,
       password: password,
@@ -154,18 +152,11 @@ export class DepositComponent {
         this.spinner.hide();
 
         this.showWithdrawDialog = true;
+        this.retries = 0;
       },
       async error => {
-        if (this.retries <= this.maxRetries) {
-          this.retries++;
-          await this.depositService.delay(3000);
-          console.log("retrying..");
-          await this.depositWithPrivateKey();
-        } else {
-          this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}` });
-          this.spinner.hide();
-          this.retries = 0;
-        }
+        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}` });
+        this.spinner.hide();
       }
     );
   }

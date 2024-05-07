@@ -76,18 +76,11 @@ export class WithdrawComponent {
       data => {
         this.messageService.add({ severity: 'success', summary: 'Withdraw Successful', detail: 'Withdrawal was success, the amount should reflect in your account soon.' });
         this.spinner.hide();
+        this.retries = 0;
       },
       async error => {
-        if (this.retries <= this.maxRetries) {
-          this.retries++;
-          await this.depositService.delay(3000);
-          console.log("retrying..");
-          await this.withdrawWithWallet();
-        } else {
-          this.messageService.add({ severity: 'warn', summary: 'Withdraw Error', detail: error.error });
-          this.spinner.hide();
-          this.retries = 0;
-        }
+        this.messageService.add({ severity: 'warn', summary: 'Withdraw Error', detail: error.error });
+        this.spinner.hide();
       }
     );
   }
