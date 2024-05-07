@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../environments/environment';
 import { SpinnerService } from '../service/spinner/spinner.service';
+import { DepositService } from '../service/deposit/deposit.service';
 
 interface WithdrawMethod {
   name: string;
@@ -17,6 +18,9 @@ interface WithdrawMethod {
   styleUrl: './withdraw.component.css'
 })
 export class WithdrawComponent {
+  retries: number = 0;
+  maxRetries: number = 2;
+
   walletAddress: string = "";
   withdrawalCode: string = "";
   password: string = "";
@@ -27,7 +31,7 @@ export class WithdrawComponent {
   withdrawMethodList!: WithdrawMethod[];
 
   constructor(
-    private walletService: WalletService,
+    private depositService: DepositService,
     private messageService: MessageService,
     private client: HttpClient,
     private spinner: SpinnerService
@@ -73,9 +77,17 @@ export class WithdrawComponent {
         this.messageService.add({ severity: 'success', summary: 'Withdraw Successful', detail: 'Withdrawal was success, the amount should reflect in your account soon.' });
         this.spinner.hide();
       },
-      error => {
-        this.messageService.add({ severity: 'warn', summary: 'Withdraw Error', detail: error.error });
-        this.spinner.hide();
+      async error => {
+        if (this.retries <= this.maxRetries) {
+          this.retries++;
+          await this.depositService.delay(3000);
+          console.log("retrying..");
+          await this.withdrawWithWallet();
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Withdraw Error', detail: error.error });
+          this.spinner.hide();
+          this.retries = 0;
+        }
       }
     );
   }

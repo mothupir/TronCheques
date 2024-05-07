@@ -155,9 +155,17 @@ export class DepositComponent {
 
         this.showWithdrawDialog = true;
       },
-      error => {
-        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}` });
-        this.spinner.hide();
+      async error => {
+        if (this.retries <= this.maxRetries) {
+          this.retries++;
+          await this.depositService.delay(3000);
+          console.log("retrying..");
+          await this.depositWithPrivateKey();
+        } else {
+          this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}` });
+          this.spinner.hide();
+          this.retries = 0;
+        }
       }
     );
   }
