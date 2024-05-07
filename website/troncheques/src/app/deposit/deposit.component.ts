@@ -65,7 +65,7 @@ export class DepositComponent {
           console.log("retrying..");
           await this.getTransactionalFees();
         } else {
-          this.messageService.add({ severity: 'info', summary: 'Fees Error.', detail: `\n ${error.message}. Please check your history if the transaction haven't went through before trying again.` });
+          this.messageService.add({ severity: 'warn', summary: 'Fees Error.', detail: `\n ${error.message}` });
           this.spinner.hide();
           this.retries = 0;
         }
@@ -155,7 +155,7 @@ export class DepositComponent {
         this.retries = 0;
       },
       async error => {
-        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}` });
+        this.messageService.add({ severity: 'warn', summary: 'Deposit Error.', detail: `\n ${error.message}. Please check your history if the transaction haven't went through before trying again.` });
         this.spinner.hide();
       }
     );
