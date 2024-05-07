@@ -65,7 +65,7 @@ export class DepositComponent {
           console.log("retrying..");
           await this.getTransactionalFees();
         } else {
-          this.messageService.add({ severity: 'warn', summary: 'Fees Error.', detail: `\n ${error.message}` });
+          this.messageService.add({ severity: 'info', summary: 'Fees Error.', detail: `\n ${error.message}. Please check your history if the transaction haven't went through before trying again.` });
           this.spinner.hide();
           this.retries = 0;
         }
