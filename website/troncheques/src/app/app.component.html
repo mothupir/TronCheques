@@ -25,10 +25,19 @@
   </div>
 
   <p-sidebar [(visible)]="visible" position="right">
-    <ng-template pTemplate="header">Menu</ng-template>
+    <ng-template pTemplate="header"></ng-template>
     <ng-template pTemplate="content">
-      <div *ngFor="let item of items">
-        <div class="btn-item" *ngIf="item.available" id="{{item.name}}" (click)="onNavClick(item.name)" routerLink="{{item.link}}"><i class="{{item.icon}}"></i> {{item.name}}</div>
+      <div>
+        <div class="btn-item" (click)="onNavClick('deposit')" routerLink="deposit"><i class="pi pi-user-plus"></i>Deposit</div>
+      </div>
+      <div>
+        <div class="btn-item" (click)="onNavClick('withdraw')" routerLink="withdraw"><i class="pi pi-user-minus"></i>Withdraw</div>
+      </div>
+      <div>
+        <div class="btn-item" *ngIf="isConnected" (click)="onNavClick('history')" routerLink="history"><i class="pi pi-history"></i>History</div>
+      </div>
+      <div>
+        <div class="btn-item" *ngIf="isAdmin" (click)="onNavClick('admin')" routerLink="admin"><i class="pi pi-user-edit"></i>Admin</div>
       </div>
     </ng-template>
     <ng-template pTemplate="footer">Tron Cheques</ng-template>
@@ -37,7 +46,7 @@
   <router-outlet />
 
   <div class="footer">
-    {{'Tron Cheques by Joint Labs Pty Ltd. @' + getYear()}}
+    {{'Tron Cheques @' + getYear()}}
   </div>
 </div>
 

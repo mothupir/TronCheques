@@ -51,11 +51,12 @@ export class DepositService {
     const fee = await this.contract.getDepositFee(this.tronWeb.toSun(amount)).call();
     const value = parseInt(this.tronWeb.toSun(amount)) + parseInt(this.tronWeb.BigNumber(fee._hex).toNumber());
     
-    await this.contract.deposit(uuid, hash, this.tronWeb.toSun(amount), ref, timestamp).send({
+    const trx = await this.contract.deposit(uuid, hash, this.tronWeb.toSun(amount), ref, timestamp).send({
       feeLimit:15_000_000_000,
       callValue: value,
       shouldPollResponse:true
     });
+    console.log("TRX:", trx);
   }
 
   async reverse(uuid: string) {

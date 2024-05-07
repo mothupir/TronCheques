@@ -13,7 +13,7 @@ dotenv.config();
 const requestLogStream = createStream('request.log', { interval: '1d', path: path.join(__dirname, 'logs') });
 
 const corsOptions = {
-    origin: env.CORS1
+    origin: env.CORS
 };
 
 const app = express();

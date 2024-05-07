@@ -14,13 +14,13 @@ export const setFees = async (fees: Fee[]) => {
       let depList = fees.map(fee => tronWeb.toSun(fee.deposit));
       let revList = fees.map(fee => tronWeb.toSun(fee.reversal));
 
-      await contract.setFees(idList, minList, maxList, depList, revList).send({
+      const trx = await contract.setFees(idList, minList, maxList, depList, revList).send({
         feeLimit:15_000_000_000,
         callValue:0,
         shouldPollResponse:true
       });
+      console.log('TRX:', trx);
     } catch (error) {
-      console.log(error);
       throw new Error(error);
     }
 }
