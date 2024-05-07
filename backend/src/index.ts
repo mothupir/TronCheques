@@ -18,6 +18,7 @@ const corsOptions = {
 
 const app = express();
 // app.use(cors(corsOptions)); To be enabled (Security feature)
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(morgan('combined', { stream: requestLogStream }));
