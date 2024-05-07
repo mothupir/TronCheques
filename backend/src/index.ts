@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-// import cors from 'cors';
+import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import { createStream } from 'rotating-file-stream';
@@ -18,7 +18,7 @@ const corsOptions = {
 
 const app = express();
 // app.use(cors(corsOptions)); To be enabled (Security feature)
-// app.use(cors());
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(morgan('combined', { stream: requestLogStream }));
